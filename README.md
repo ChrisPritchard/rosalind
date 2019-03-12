@@ -1,2 +1,3 @@
 # rosalind
-My solutions to rosalind exercises, in F#
+
+My solutions to [rosalind](http://rosalind.info) exercises, in F#
