@@ -1,4 +1,6 @@
-# Counting DNA Nucleotides
+﻿
+(*
+Counting DNA Nucleotides:
 
 Making up all living material, the cell is considered to be the building block of life. The nucleus, a component of most eukaryotic cells, was identified as the hub of cellular activity 150 years ago. Viewed under a light microscope, the nucleus appears only as a darker region of the cell, but as we increase magnification, we find that the nucleus is densely filled with a stew of macromolecules called chromatin. During mitosis (eukaryotic cell division), most of the chromatin condenses into long, thin strings called chromosomes. See Figure 1 for a figure of cells in different stages of mitosis.
 
@@ -9,16 +11,8 @@ The nucleic acid monomer is called a nucleotide and is used as a unit of strand 
 For example, Figure 2 shows a strand of deoxyribose nucleic acid (DNA), in which the sugar is called deoxyribose, and the only four choices for nucleobases are molecules called adenine (A), cytosine (C), guanine (G), and thymine (T).
 
 For reasons we will soon see, DNA is found in all living organisms on Earth, including bacteria; it is even found in many viruses (which are often considered to be nonliving). Because of its importance, we reserve the term genome to refer to the sum total of the DNA contained in an organism's chromosomes.
+*)
 
-## Problem
-
-A string is simply an ordered collection of symbols selected from some alphabet and formed into a word; the length of a string is the number of symbols that it contains.
-
-An example of a length 21 DNA string (whose alphabet contains the symbols 'A', 'C', 'G', and 'T') is "ATGCTTCAGAAAGGTCTTACG."
-
-Given: A DNA string s
-
-of length at most 1000 nt.
-
-Return: Four integers (separated by spaces) counting the respective number of times that the symbols 'A', 'C', 'G', and 'T' occur in s
-.
+let rosalind_dna = "GCGATTATATCAAGGACCTTTTGATCATACAATTTAGATTATGATGAATCGGGGCTGACGCATTGGGATCTTTCTCTCCCTTTGATAGATCTGAACAAACACACGGATGAATATTGCCCGTTGAGATACCGAAAATACTTAGGGGATGAGTCAGACACCCCGAATCATATGACGCTTCTACCGCGGGAGCTTATTTAGTCTTCGGCGCACAGCAAAGCTTACAGAGTTCGCCTTATTGACTTGGTATTCATGCCAAACGAATCTCGTTTTTGTACGCCGGCTCTATTCACGCATCTCCTGCTGACGTTAACTATCACTGCAGACCTGGTGCTACGTATACGACTTCCTCATACCAATTAACCGGACCAATCGACGCAAGAGATGAGCTGTACCTGTCATAATACTGAACCGCAAACGAAGAACCGGTTCGTGTACGGAACATGAACAAGCCAAGTGGTTGATCTCTACGTGCGTGTGGTCAAACGTTTTAACGGGCGATGCGGGCGTACGCGCGACATGATTGAAGACCATTAGGGTTTTCACCGGAATAAGCGGCTTATCCCGGGTACCGTAACCAAACTTACCGGGGACCTAAGGATCCTAAGAATCTATCGGATGGGCATACTGCAGTCATTGTACGCTTGGCTCCCCTTTTTTTATGGGCCTCCCCCTCCTCAAGAGAGAAGCCCTAACAAGTGATGTACAATGGAGCTCTTCGCCGATACGAACAGAATGAAGAAAAACCAGTTGGCACCTCTTCAGTCTATGGCTGTGGGTGGTTGATTCCAGTCGAGGTCGGAGCAGTGATTCGATCCCCTTTTGTTATCACAT"
+let map = rosalind_dna |> Seq.countBy id |> Map.ofSeq
+sprintf "%i %i %i %i" map.['A'] map.['C'] map.['G'] map.['T']
