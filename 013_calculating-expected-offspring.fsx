@@ -8,7 +8,7 @@ Molecular biology is not immune from the need for averages. Researchers need to 
 *)
 
 // calculating average a couple will have AT LEAST ONE is the same as 1. - NONE
-// e.g. Aa - Aa, to have none across two children is 0.5 * 0.5 = 0.25. So at least one is 1. - 0.25 = 0.75
+// e.g. Aa - Aa, to pick 'a' twice is 0.5 * 0.5 = 0.25. So at least one 'A' is 1. - 0.25 = 0.75
 
 let AaAa = 1. - (0.5 * 0.5)
 let Aaaa = 1. - (0.5 * 1.)
