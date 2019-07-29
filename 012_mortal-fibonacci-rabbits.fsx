@@ -11,7 +11,7 @@ By 1950, Australian rabbits numbered 600 million, causing the government to deci
 The bunnies will not be stopped, but they don't live forever, and so in this problem, our aim is to expand Fibonacci's rabbit population model to allow for mortal rabbits.
 *)
 
-let n, m = 84, 18
+let n, m = 95, 17
 
 let rec advanceMonth conceived newBorn reproductive n =
     if n = 1 then 

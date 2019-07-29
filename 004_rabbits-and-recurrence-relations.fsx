@@ -18,7 +18,7 @@ Fibonacci's exercise was to calculate how many pairs of rabbits would remain in 
 Although Fibonacci's assumption of the rabbits' immortality may seem a bit farfetched, his model was not unrealistic for reproduction in a predator-free environment: European rabbits were introduced to Australia in the mid 19th Century, a place with no real indigenous predators for them. Within 50 years, the rabbits had already eradicated many plant species across the continent, leading to irreversible changes in the Australian ecosystem and turning much of its grasslands into eroded, practically uninhabitable parts of the modern Outback (see Figure 2). In this problem, we will use the simple idea of counting rabbits to introduce a new computational topic, which involves building up large solutions from smaller ones.
 *)
 
-let m, k = 29, 2L
+let m, k = 35, 4L
 
 let rec advanceMonth conceived newBorn reproductive n =
     let newReproductive = reproductive + newBorn
