@@ -11,16 +11,17 @@ By 1950, Australian rabbits numbered 600 million, causing the government to deci
 The bunnies will not be stopped, but they don't live forever, and so in this problem, our aim is to expand Fibonacci's rabbit population model to allow for mortal rabbits.
 *)
 
-let n, m = 95, 17
+let n, m = 98, 16
+//let n, m = 6, 3 // months, life
 
-let rec advanceMonth conceived newBorn reproductive n =
-    if n = 1 then 
-        List.sumBy fst reproductive + newBorn
-    else
-        let aged = reproductive |> List.filter (fun (_,a) -> a < m) |> List.map (fun (c, a) -> (c, a + 1))
-        let newReproductive = (newBorn,2)::aged
-        let newConceived = newReproductive |> List.sumBy (fun (c, _) -> c)
-        let newNewBorn = conceived
-        advanceMonth newConceived newNewBorn newReproductive (n - 1)
+let alive = Array.create (n + 1) (bigint 0)
+let deaths = Array.create (n + m + 2) (bigint 0)
 
-advanceMonth 0L 1L [] n
+alive.[2] <- bigint 2
+deaths.[m + 1] <- bigint 2
+
+for i = 3 to n do
+    alive.[i] <- alive.[i - 1] + alive.[i - 2] - deaths.[i]
+    deaths.[i + (m - 1)] <- alive.[i - 2]
+
+printfn "Alive at month %i: %A rabbits" n alive.[n]
