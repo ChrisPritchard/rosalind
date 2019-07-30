@@ -1,3 +1,5 @@
+// http://rosalind.info/problems/iprb/
+
 (*
 Introduction to Mendelian Inheritance:
 
@@ -17,28 +19,29 @@ We may encode the dominant allele of a factor by a capital letter (e.g., A
 The different possibilities describing an individual's inheritance of two alleles from its parents can be represented by a Punnett square; see Figure 1 for an example.    
 *)
 
-let XX, Xy, yy = 29, 30, 25
+(*
+Given: Three positive integers k, m, and n, representing a population containing k+m+n organisms: k individuals are homozygous dominant for a factor, m are heterozygous, and n are homozygous recessive.
+Return: The probability that two randomly selected mating organisms will produce an individual possessing a dominant allele (and thus displaying the dominant phenotype). Assume that any two organisms can mate
+*)
 
-type Allele = X | Y
-let set = 
-    List.replicate XX (X,X) @ List.replicate Xy (X,Y) @ List.replicate yy (Y,Y)
-    |> List.mapi (fun i g -> g, i)
+let k, m, n = 2, 2, 2
 
-let rec select (prior: Allele option) list = [
-    for ((a21, a22), i) in list do
-        match prior with
-        | Some a -> 
-            yield a,a21
-            yield a,a22
-        | None ->
-            yield! select (Some a21) (List.except [(a21, a22), i] list)
-            yield! select (Some a22) (List.except [(a21, a22), i] list)
-]
+// two ks will have probability 1, two ms will have probability 0.5, two ns have probably 0.
+// one k plus whatever has probability 1, one m plus n has probability 0.5
 
-let allOptions = select None set
-let result = 
-    allOptions
-    |> List.filter (fun (a1, a2) -> a1 = X || a2 = X)
-    |> List.length
-    |> float
-    |> fun c -> c / float (List.length allOptions)
+type Genes = FAA | FAa | Faa
+let population = Array.concat [| Array.create k FAA; Array.create m FAa; Array.create n Faa |] |> Array.indexed
+let matingPairs = 
+    population 
+    |> Array.collect (fun (i1, first) ->
+        population 
+        |> Array.filter (fun (i2, _) -> i2 <> i1 )
+        |> Array.map (fun (_, second) -> first, second))
+        //|> Array.distinct
+let asProbabilities = 
+    matingPairs 
+    |> Array.map (function 
+        | (FAA, _) | (_, FAA) -> 1. / float matingPairs.Length
+        | (FAa, _) | (_, FAa) -> 0.5 / float matingPairs.Length
+        | _ -> 0.)
+    |> Array.sum
