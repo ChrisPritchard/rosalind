@@ -26,3 +26,5 @@ w.WriteLine ""
 
 w.Close ()
 w.Dispose ()
+
+printfn "Result written to output.txt"
