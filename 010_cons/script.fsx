@@ -1,14 +1,9 @@
-(*
-    Finding the most likely common ancestor:
-
-    In “Counting Point Mutations”, we calculated the minimum number of symbol mismatches between two strings of equal length to model the problem of finding the minimum number of point mutations occurring on the evolutionary path between two homologous strands of DNA. If we instead have several homologous strands that we wish to analyze simultaneously, then the natural problem is to find an average-case strand to represent the most likely common ancestor of the given strands.
-*)
 
 open System.IO
-#load "./fasta.fs"
+#load "../fasta.fs"
 
-let s = File.ReadAllText "./010_input.txt"
-let o = File.OpenWrite "./010_output.txt"
+let s = File.ReadAllText "./input.txt"
+let o = File.OpenWrite "./output.txt"
 let w = new StreamWriter(o)
 
 let fasta = Fasta.parse s
