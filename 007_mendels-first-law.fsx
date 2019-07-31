@@ -24,24 +24,36 @@ Given: Three positive integers k, m, and n, representing a population containing
 Return: The probability that two randomly selected mating organisms will produce an individual possessing a dominant allele (and thus displaying the dominant phenotype). Assume that any two organisms can mate
 *)
 
-let k, m, n = 2, 2, 2
+//let k, m, n = 2, 2, 2
+let k, m, n = 15, 23, 21
 
-// two ks will have probability 1, two ms will have probability 0.5, two ns have probably 0.
-// one k plus whatever has probability 1, one m plus n has probability 0.5
+// Verbose calculation:
 
-type Genes = FAA | FAa | Faa
-let population = Array.concat [| Array.create k FAA; Array.create m FAa; Array.create n Faa |] |> Array.indexed
-let matingPairs = 
-    population 
-    |> Array.collect (fun (i1, first) ->
-        population 
-        |> Array.filter (fun (i2, _) -> i2 <> i1 )
-        |> Array.map (fun (_, second) -> first, second))
-        //|> Array.distinct
-let asProbabilities = 
-    matingPairs 
-    |> Array.map (function 
-        | (FAA, _) | (_, FAA) -> 1. / float matingPairs.Length
-        | (FAa, _) | (_, FAa) -> 0.5 / float matingPairs.Length
-        | _ -> 0.)
-    |> Array.sum
+// type Genes = FAA | FAa | Faa
+// let population = Array.concat [| Array.create k FAA; Array.create m FAa; Array.create n Faa |] |> Array.indexed
+// let matingPairs = 
+//     population 
+//     |> Array.collect (fun (i1, first) ->
+//         population 
+//         |> Array.filter (fun (i2, _) -> i2 <> i1 )
+//         |> Array.map (fun (_, second) -> first, second))
+// let result = 
+//     matingPairs 
+//     |> Array.sumBy (function 
+//         | (FAA, _) | (_, FAA) -> 1. / float matingPairs.Length
+//         | (FAa, FAa) -> 0.75 / float matingPairs.Length
+//         | (FAa, _) | (_, FAa) -> 0.5 / float matingPairs.Length
+//         | _ -> 0.)
+
+// Concise calculation
+
+let pop = (k + m + n) * (k + m + n - 1)
+
+let fk, fm, fn = float k, float m, float n
+let success = 
+        (fk * (fk-1.)) + (fk * fm) + (fk * fn)
+        + (fm * fk) + (fm * (fm-1.) * 0.75) + (fm * fn * 0.5)
+        + (fn * fk) + ((fn * fm) * 0.5)
+let result = success / float pop
+
+printfn "Result: %f" result
