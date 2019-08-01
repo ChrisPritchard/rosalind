@@ -11,7 +11,6 @@ let indexes =
     |> Array.windowed 3 |> Array.map (String.concat "") 
     |> Array.indexed |> Array.filter (snd >> (=) "AUG") 
     |> Array.map fst
-let substrings = indexes |> Array.map (fun i -> rna.[i..])
 
 let protein rna =
     rna 
@@ -25,6 +24,7 @@ let protein rna =
         ("", false)
     |> fst
 
-let result = substrings |> Array.map protein |> String.concat "\r\n"
+let rnaSubs = indexes |> Array.map (fun i -> rna.[i..]) 
+let result = rnaSubs |> Array.map protein |> String.concat "\r\n"
 
 printfn "%s" result
