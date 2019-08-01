@@ -1,10 +1,20 @@
 
-// this is a binomial distribution problem. so first need to get probability at generation k that a given organism will be Aa Ba
-// for Aa Ba + Aa Ba the probability of an Aa Ba child is 0.25 (prob of Aa is 0.5 and prob of Ba is 05, so both is 0.25)
-// so...at a guess, 0.25^k?
+//let k, N = 2, 1
+let k, N = 7, 38
 
-// then binomial formula: (n k) * p^k * (1 - p)^n-k. in this instance, at the kth generation there will be 2^(k-1) children, which is n in formula. and N is the k value.
-// so for sample of 2, there is 2 children. (n k) = n! / k! * (n - k)!, so from 2 choose 1 is 2 / 1 * 1 = 2. 2 * 0.0625 * 0.9375
+let pAaBa = 0.25 // key insight is that Aa Ba is 0.25 from Aa Ba, regardless of generation or mate
+let countAtK = 2. ** float k
 
-let k, N = 2, 1
+/// Simple (not super efficient) Factorial function
+let fact (n: float) = if n = 0. then 1. else List.reduce (*) [1.0..n]
 
+/// Probability Mass Function (PMF)
+let pmf n = 
+    let n = float n
+    /// binomial coefficient (from n choose k)
+    let nCk = fact countAtK / (fact n * fact (countAtK - n))
+    nCk * (pAaBa ** n) * ((1. - pAaBa) ** (countAtK - n))    
+
+let result = [N..int countAtK] |> List.sumBy pmf // Also key, the result is N or more, so N to max should be summed
+
+printfn "result: %f" result
