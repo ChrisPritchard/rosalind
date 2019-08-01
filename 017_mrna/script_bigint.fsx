@@ -1,6 +1,6 @@
 
-// this script uses .NETs BigInteger (bigint in F#). It allows an arbitarily large number to be represented 
-// (i.e. I don't need to mod by 1 mil here, technically, if I wanted the raw number which is 430 digits long).
+// this script uses .NETs BigInteger (bigint in F#). It allows an arbitarily large number to be represented. 
+// i.e. I don't need to mod by 1 mil here, technically, if I wanted the raw number. It's 430 digits long.
 
 #load "../codons.fs"
 
