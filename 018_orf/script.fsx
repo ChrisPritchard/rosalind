@@ -1,8 +1,8 @@
 
 #load "../codons.fs"
 
-let input = "AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG"
-//let input = System.IO.File.ReadAllLines "./input.txt" |> Array.tail |> String.concat ""
+//let input = "AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG"
+let input = System.IO.File.ReadAllLines "./input.txt" |> Array.tail |> String.concat ""
 
 let revc (dna: string) = 
     dna 
@@ -23,7 +23,6 @@ let protein (rna: string) =
     let res, finished =
         rna 
         |> Seq.chunkBySize 3 
-        //|> Seq.filter (fun a -> Array.length a = 3)
         |> Seq.fold (fun (acc, stopped) s -> 
             if stopped then (acc, true) 
             else 
@@ -32,11 +31,9 @@ let protein (rna: string) =
                 | Some v -> 
                     if v = "Stop" then (acc, true)
                     else acc + v, false
-                | None -> 
-                    let error = sprintf "invalid: %s\r\n%s" key rna
-                    failwith error)
+                | None ->  "", true)
             ("", false)
-    if finished then Some res else None
+    if finished && res <> "" then Some res else None
 
 let proteins (rna: string) =
     let openReadingFrames = 
@@ -54,4 +51,5 @@ let result =
     |> Array.distinct 
     |> String.concat "\r\n"
 
-printfn "%s" result
+System.IO.File.WriteAllText ("./output.txt", result)
+printfn "Result written to output.txt"
