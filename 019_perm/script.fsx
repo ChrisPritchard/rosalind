@@ -1,16 +1,28 @@
 
-let input = 3
+open System.IO
 
-let set = [1..input]
+let input = 6
 
-let rec permute = 
+let rec permute =
     function
-    | [] -> []
-    | head::rest ->
-        permute rest |> List.map (fun tail -> head::tail)
+    | [] -> [[]]
+    | set ->
+        set 
+        |> List.collect (fun n ->
+            let rest = List.except [n] set |> permute
+            rest |> List.map (fun sub -> n::sub))
 
-let results = permute set |> List.toArray
+let results = permute [1..input] |> Seq.toArray
 
-printfn "%i" results.Length
+
+let o = File.OpenWrite "./output.txt"
+let w = new StreamWriter(o)
+
+w.WriteLine results.Length
 for result in results do
-    printfn "%s" (result |> List.map string |> String.concat "")
+    w.WriteLine (result |> List.map string |> String.concat " ")
+
+w.Close ()
+w.Dispose ()
+
+printfn "Result written to output.txt"
