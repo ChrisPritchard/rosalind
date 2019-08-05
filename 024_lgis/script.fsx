@@ -8,26 +8,21 @@ let input = """
 let raw = input.Split ("\r\n ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
 let chars = Array.skip 1 raw |> Array.map int |> Array.toList
 
-let rec processor (rem: int list) (decAcc: int list list) (incAcc: int list list) =
+let rec processor (rem: int list) (acc: int list list) predicate =
     match rem with
     | [] ->
-        let inc = Seq.map string incAcc.[0] |> Seq.rev |> String.concat " "
-        let dec = Seq.map string decAcc.[0] |> Seq.rev |> String.concat " "
-        inc + "\r\n" + dec
+        acc |> Seq.maxBy List.length |> Seq.map string |> Seq.rev |> String.concat " "
     | n::rem ->
-        let decAcc = 
-            List.choose (function 
-                | p::rest when p > n -> Some (n::p::rest)
-                | _ -> None) decAcc
-            |> function [] -> [[n]] | o -> o
-        let incAcc = 
-            List.choose (function 
-                | p::rest when p < n -> Some (n::p::rest)
-                | _ -> None) incAcc
-            |> function [] -> [[n]] | o -> o
-        processor rem decAcc incAcc
+        let appended =
+            List.map (function 
+                | p::rest when predicate p n -> n::p::rest
+                | o -> o) acc
+        let acc = [n]::appended
+        processor rem acc predicate
 
-let result = processor chars [] []
+let inc = processor chars [] (fun p n -> n > p)
+let dec = processor chars [] (fun p n -> n < p)
+let result = inc + "\r\n" + dec
 
 System.IO.File.WriteAllText ("./output.txt", result)
 printfn "Result written to output.txt"
