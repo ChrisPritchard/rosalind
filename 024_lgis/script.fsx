@@ -7,14 +7,10 @@ open System
 let input = System.IO.File.ReadAllText "./input.txt"
 
 let raw = input.Split ("\r\n ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-let chars = Array.skip 1 raw |> Array.map int |> Array.indexed // index, value
+let chars = Array.skip 1 raw |> Array.map int |> Array.toList
 
-let next (index, value) p = 
-    Array.filter (fun (oi, ov) -> oi > index && p value ov) chars
-
-let rec collector acc
-
-let result = ""
-
-System.IO.File.WriteAllText ("./output.txt", result)
-printfn "Result written to output.txt"
+let rec options n rem =
+    match rem with
+    | p::rest when n > p -> rem::options n rest
+    | _::rest -> options n rest
+    | [] -> []
