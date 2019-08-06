@@ -15,6 +15,19 @@ let mapped predicate =
         (i, v), chars |> Array.filter (fun (oi, ov) -> oi > i && predicate v ov))
     |> Map.ofArray
 
+let paths predicate =
+    let reversed = chars |> Seq.rev
+    (Map.empty, reversed) ||> Seq.fold (fun map (i, v) ->
+        let next = 
+            chars 
+            |> Array.filter (fun (oi, ov) -> oi > i && predicate v ov)
+            |> Array.collect (fun n -> 
+                match Map.tryFind n map with 
+                | Some c -> Array.map (fun l -> n::l) c
+                | _ -> [|[n]|])
+        Map.add (i, v) next map)
+    |> Map.toArray |> Array.collect snd |> Array.maxBy List.length
+
 // let longest mapped =
 //     let rec explore acc current =
 //         let res = Map.find current mapped
@@ -24,7 +37,7 @@ let mapped predicate =
 //     |> Array.collect (fun start -> explore [start] start)
 //     |> Array.maxBy List.length
 
-let test = mapped (>)
+let test = paths (>)
 // let long = longest test
 
 // let result = List.map string long |> String.concat " "
