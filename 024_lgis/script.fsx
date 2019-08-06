@@ -6,39 +6,20 @@ open System
 // """
 let input = System.IO.File.ReadAllText "./input.txt"
 
+// trying to adapt https://www.geeksforgeeks.org/construction-of-longest-increasing-subsequence-using-dynamic-programming/
+
 let raw = input.Split ("\r\n ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-let chars = Array.skip 1 raw |> Array.map int |> Array.indexed
+let nums = Array.skip 1 raw |> Array.map int
 
-let mapped predicate = 
-    chars 
-    |> Array.map (fun (i, v) -> 
-        (i, v), chars |> Array.filter (fun (oi, ov) -> oi > i && predicate v ov))
-    |> Map.ofArray
+let res = Array.create nums.Length [nums.[0]]
 
-let paths predicate =
-    let reversed = chars |> Seq.rev
-    (Map.empty, reversed) ||> Seq.fold (fun map (i, v) ->
-        let next = 
-            chars.[i+1..] 
-            |> Array.filter (fun (oi, ov) -> oi > i && predicate v ov)
-            |> Array.collect (fun other -> 
-                match Map.tryFind other map with
-                | Some set when not (Array.isEmpty set) -> Array.map (fun s -> other::s) set
-                | _ -> [|[other]|])
-        Map.add (i, v) next map)
-    |> Map.toArray |> Array.filter (fun (_, o) -> o.Length > 0)
+for i in [1..res.Length - 1] do
+    let num = nums.[i]
+    let next = 
+        match res.[i - 1] with
+        | [] -> [num]
+        | head::tail when head < num -> num::head::tail
+        | _::tail -> num::tail
+    res.[i] <- next
 
-// let longest mapped =
-//     let rec explore acc current =
-//         let res = Map.find current mapped
-//         if Array.isEmpty res then [|acc|]
-//         else Array.collect (fun next -> explore (next::acc) next) res
-//     chars 
-//     |> Array.collect (fun start -> explore [start] start)
-//     |> Array.maxBy List.length
-
-let test = paths (>)
-// let long = longest test
-
-// let result = List.map string long |> String.concat " "
-printfn "%A" test
+printfn "%A" res
