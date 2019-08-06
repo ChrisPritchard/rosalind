@@ -19,14 +19,14 @@ let paths predicate =
     let reversed = chars |> Seq.rev
     (Map.empty, reversed) ||> Seq.fold (fun map (i, v) ->
         let next = 
-            chars 
+            chars.[i+1..] 
             |> Array.filter (fun (oi, ov) -> oi > i && predicate v ov)
-            |> Array.collect (fun n -> 
-                match Map.tryFind n map with 
-                | Some c -> Array.map (fun l -> n::l) c
-                | _ -> [|[n]|])
+            |> Array.collect (fun other -> 
+                match Map.tryFind other map with
+                | Some set when not (Array.isEmpty set) -> Array.map (fun s -> other::s) set
+                | _ -> [|[other]|])
         Map.add (i, v) next map)
-    |> Map.toArray |> Array.collect snd |> Array.maxBy List.length
+    |> Map.toArray |> Array.filter (fun (_, o) -> o.Length > 0)
 
 // let longest mapped =
 //     let rec explore acc current =
