@@ -15,16 +15,16 @@ let subsequence predicate =
     let L = Array.create nums.Length []
     L.[0] <- [nums.[0]]
 
-    for i in [1..L.Length - 1] do
+    for i in [1..L.Length-1] do
         for j in [0..i-1] do
-            if predicate nums.[i] nums.[j] && L.[i].Length < L.[j].Length then
+            if predicate nums.[i] nums.[j] && L.[i].Length < L.[j].Length + 1 then
                 L.[i] <- L.[j]
         L.[i] <- nums.[i]::L.[i]
 
-    Array.maxBy List.length L
+    Array.maxBy List.length L |> List.rev
 
-let inc = subsequence (<)
-let dec = subsequence (>)
+let dec = subsequence (<)
+let inc = subsequence (>)
 let concat = List.map string >> String.concat " "
 
 let result = sprintf "%s\r\n%s" (concat inc) (concat dec)
