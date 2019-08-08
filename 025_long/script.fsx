@@ -2,17 +2,17 @@ open System
 
 #load "../fasta.fs"
 
-let input = """
->Rosalind_56
-ATTAGACCTG
->Rosalind_57
-CCTGCCGGAA
->Rosalind_58
-AGACCTGCCG
->Rosalind_59
-GCCGGAATAC
-"""
-//let input = System.IO.File.ReadAllText "./input.txt"
+// let input = """
+// >Rosalind_56
+// ATTAGACCTG
+// >Rosalind_57
+// CCTGCCGGAA
+// >Rosalind_58
+// AGACCTGCCG
+// >Rosalind_59
+// GCCGGAATAC
+// """
+let input = System.IO.File.ReadAllText "./input.txt"
 
 let dna = Fasta.parse input |> List.map snd
 
@@ -51,5 +51,6 @@ let shortest start =
             soFar |> Option.bind expand
     expand []
 
-let shortestStart = dna |> List.choose shortest |> List.minBy (fun s -> s.Length)
-printfn "%s" shortestStart
+let result = dna |> List.choose shortest |> List.minBy (fun s -> s.Length)
+System.IO.File.WriteAllText ("./output.txt", result)
+printfn "Result written to output.txt"
