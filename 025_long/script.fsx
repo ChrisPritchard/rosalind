@@ -16,4 +16,17 @@ GCCGGAATAC
 
 let dna = Fasta.parse input |> List.map snd
 
-printfn "%A" dna
+let links = 
+    dna 
+    |> List.map (fun left ->
+        left, 
+        dna |> List.choose (fun right -> 
+            if left = right then None
+            else
+                [1..left.Length-2] 
+                |> List.map (fun i -> left.[i..])
+                |> List.tryFind (right.StartsWith)
+                |> Option.map (fun subSet -> right, subSet)))
+    |> Map.ofList
+
+printfn "%A" links
