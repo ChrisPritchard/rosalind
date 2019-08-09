@@ -20,10 +20,16 @@ let allEdges =
             then  Some ((i, n), (oi, on))
             else None))
 
-let (_, result) = 
-    ((Set.empty, 0), allEdges)
-    ||> Seq.fold (fun (visited, count) (node1, node2) -> 
-        if visited.Contains node1 || visited.Contains node2 then visited, count
-        else (Set.add node1 visited |> Set.add node2), count + 1)
+let candidates visited =
+    allEdges 
+    |> Array.filter (fun (node1, node2) -> 
+        not (Set.contains node1 visited) && not (Set.contains node2 visited))
 
+let rec processCandidate count visited (node1, node2) : int =
+    let newVisited = Set.add node1 visited |> Set.add node2
+    let candidates = candidates newVisited
+    if Array.isEmpty candidates then count
+    else candidates |> Array.map (processCandidate (count + 1) newVisited) |> Array.max
+
+let result = allEdges |> Array.map (processCandidate 0 Set.empty) |> Array.max
 printfn "Result: %i" result
