@@ -17,7 +17,7 @@ let allEdges =
         tagged 
         |> Array.choose (fun (oi, on) -> 
             if on = opposite n 
-            then  Some ((i, n), (oi, on))
+            then Some ((i, n), (oi, on))
             else None))
 
 let candidates visited =
@@ -25,11 +25,16 @@ let candidates visited =
     |> Array.filter (fun (node1, node2) -> 
         not (Set.contains node1 visited) && not (Set.contains node2 visited))
 
-let rec processCandidate count visited (node1, node2) : int =
+let rec processCandidate count visited (node1, node2) =
     let newVisited = Set.add node1 visited |> Set.add node2
     let candidates = candidates newVisited
-    if Array.isEmpty candidates then count
-    else candidates |> Array.map (processCandidate (count + 1) newVisited) |> Array.max
+    if Array.isEmpty candidates then [|count|]
+    else candidates |> Array.collect (processCandidate (count + 1) newVisited)
 
-let result = allEdges |> Array.map (processCandidate 0 Set.empty) |> Array.max
-printfn "Result: %i" result
+let result = 
+    allEdges 
+    |> Array.collect (processCandidate 0 Set.empty) 
+    |> Array.sortDescending 
+    |> Array.groupBy id 
+    |> Array.head |> snd |> Array.length
+printfn "Result: %A" result
