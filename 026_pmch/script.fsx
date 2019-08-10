@@ -7,16 +7,16 @@ open System
 // AGCUAGUCAU
 // """
 let input = """
->Rosalind_1305
-AGACCUCGAGACCGUAUAGAGUAUCCGUGAAAUGGAAACGGCGCCGUUCUCCUUGGGCUU
-CAGCUCUAAGUAGCUUAC
+>Rosalind_3028
+GUGAUGUGCAUAGCUUCAACUUGUCGUACUCUACAGCCAGUCGCUUUGGACAUAAGCGAA
+GAUGAGUCCACA
 """
 
 let dna = snd (Fasta.parse input).[0]
-let adenine = Seq.filter ((=) 'A') dna |> Seq.length
-let cytosine = (dna.Length - (adenine * 2)) / 2
+let au, cg = ((0, 0), dna) ||> Seq.fold (fun (au, cg) -> 
+    function 'A' -> au + 1, cg | 'C' -> au, cg + 1 | _ -> au, cg)
 
-let fact n = if n = 0 then 1UL else List.reduce (*) [1UL..uint64 n]
+let fact n = if n = 0 then bigint 1 else List.reduce (*) [bigint 1..bigint n]
 
-let result = fact adenine * fact cytosine
-printfn "Result: %i" result
+let result = fact au * fact cg
+printfn "Result: %A" result
