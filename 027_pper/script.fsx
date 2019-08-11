@@ -1,4 +1,3 @@
-open System
 
 //let n, k = 21, 7
 let n, k = 97, 10
