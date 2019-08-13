@@ -30,3 +30,9 @@ let folder (unmatched, count) c =
 
 let _, result = Seq.fold folder ([], bigint 0) rna
 printfn "Result: %A" result
+
+let fact n = if n = 0 then bigint 1 else List.reduce (*) [bigint 1..bigint n]
+let catalan n = fact (2 * n) / (fact (n + 1) * fact n)
+
+let test = catalan rna.Length
+printfn "Test: %A" test
