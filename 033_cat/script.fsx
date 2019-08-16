@@ -20,6 +20,14 @@ let rna = snd parsed.[0]
 let paired a b = match a, b with | 'A', 'U' | 'U', 'A' | 'C', 'G' | 'G', 'C' -> true | _ -> false
 let cache = System.Collections.Generic.Dictionary<int * int, bigint>()
 
+// rethink
+// target: all possible perfect non-crossing matchings
+// meaning, every way all nucs can be matched where none cross
+// so for each nuc, all matchings of that nuc that also allow all other nucs to be matched
+
+// so go through nucs, find all nucs following that it can match with
+// for each found, test that all nucs inside can match (inner is greater than 0) and all nucs following can be matched (outer > 0)
+
 let rec calc low high = 
     match cache.TryGetValue ((low, high)) with
     | true, v -> v
