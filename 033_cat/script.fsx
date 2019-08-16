@@ -29,18 +29,26 @@ let cache = System.Collections.Generic.Dictionary<int * int, bigint>()
 // for each found, test that all nucs inside can match (inner is greater than 0) and all nucs following can be matched (outer > 0)
 
 // so the ultimate result is:
-// every total nuc match * every inner nuc match
+// factorial all nucs. for each:
+        // find all forward matches, jumping by 2
+        // for each match:
+                // sum up internal matches
+                // sum up following matches
 // which means over a range count all matches, and for each match count all matches for inner range
 
 let rec calc low high = 
     match cache.TryGetValue ((low, high)) with
     | true, v -> v
     | _ ->
-        let aggregrator index = 
-            if not (paired rna.[low] rna.[index]) then bigint 0
-            else if index - low = 1 then bigint 1
-            else calc (low + 1) (index - 1)
-        let result = List.sumBy aggregrator [low + 1..2..high]
+        let mutable result = bigint 0
+        for i in [low..high] do 
+           let nuc = rna.[i]
+           let mutable nucSum = bigint 1
+           for j in [i+1..high] do
+                if paired nuc rna.[j] then
+                   if j - i > 1 then
+                       nucSum <- nucSum * calc (i + 1) (j - 1)
+           result <- result + nucSum
         cache.Add((low, high), result)
         result
 
