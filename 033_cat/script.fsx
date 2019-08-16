@@ -1,18 +1,18 @@
 
 #load "../fasta.fs"
 
-// let input = """
-// >Rosalind_57
-// AUAU
-// """
 let input = """
->Rosalind_2527
-UGAAUUAAUAUUACGUGGCCAAAUUAGAUCCCGGAUUUAAUCAUGUCGAAUAUUCUAUGC
-GGCCUAAACCGGGCGCUUGAUCACCGGCGGCCGCACGAUUGAACGCGUUACGAUUCGCGU
-GCAAUCGUACGGCAGCGUAGGCCUACGAUAUCUUGCAGCCGAAGAUCUGUAGCCGCGGGC
-CCUAUUAAUUGAUAAUUCAACCGGUAGAUGUUAACUAAUAUAUCGCGAUUUAAUAAGCAU
-UUACGAUCUGCUAAUAUAGC
+>Rosalind_57
+AUAU
 """
+// let input = """
+// >Rosalind_2527
+// UGAAUUAAUAUUACGUGGCCAAAUUAGAUCCCGGAUUUAAUCAUGUCGAAUAUUCUAUGC
+// GGCCUAAACCGGGCGCUUGAUCACCGGCGGCCGCACGAUUGAACGCGUUACGAUUCGCGU
+// GCAAUCGUACGGCAGCGUAGGCCUACGAUAUCUUGCAGCCGAAGAUCUGUAGCCGCGGGC
+// CCUAUUAAUUGAUAAUUCAACCGGUAGAUGUUAACUAAUAUAUCGCGAUUUAAUAAGCAU
+// UUACGAUCUGCUAAUAUAGC
+// """
 
 let parsed = Fasta.parse input
 let rna = snd parsed.[0]
@@ -28,6 +28,10 @@ let cache = System.Collections.Generic.Dictionary<int * int, bigint>()
 // so go through nucs, find all nucs following that it can match with
 // for each found, test that all nucs inside can match (inner is greater than 0) and all nucs following can be matched (outer > 0)
 
+// so the ultimate result is:
+// every total nuc match * every inner nuc match
+// which means over a range count all matches, and for each match count all matches for inner range
+
 let rec calc low high = 
     match cache.TryGetValue ((low, high)) with
     | true, v -> v
@@ -35,10 +39,7 @@ let rec calc low high =
         let aggregrator index = 
             if not (paired rna.[low] rna.[index]) then bigint 0
             else if index - low = 1 then bigint 1
-            else
-                let inner = calc (low + 1) (index - 1)
-                if index < high then inner * calc (index + 1) high
-                else inner
+            else calc (low + 1) (index - 1)
         let result = List.sumBy aggregrator [low + 1..2..high]
         cache.Add((low, high), result)
         result
