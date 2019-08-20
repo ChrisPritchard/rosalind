@@ -26,7 +26,7 @@ let rec count low high =
     |> List.filter (fun i -> paired rna.[low] rna.[i])
     |> List.collect (fun i ->
         let inner = if i - low = 1 then [""] else count (low + 1) (i - 1)
-        let first = inner |> List.map (fun s -> sprintf "(%i%s%i)" low s i)
+        let first = inner |> List.map (fun s -> sprintf "(%c%s%c)" rna.[low] s rna.[i])
         let after = if i = high then [""] else count (i + 1) high
         after |> List.collect (fun s -> first |> List.map (fun s2 -> s2 + s))
     )
