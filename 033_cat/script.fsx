@@ -46,6 +46,7 @@ let rec count low high =
             else
                 let toMatch = rna.[low]
                 let matches = Array.filter (fun index -> paired toMatch rna.[index]) [|low + 1..2..high|]
+                printfn "%i matches %A" low matches
                 let count = 
                     bigint matches.Length 
                     * (Array.map (fun index -> 
