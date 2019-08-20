@@ -46,12 +46,14 @@ let rec count low high =
             else
                 let toMatch = rna.[low]
                 let matches = Array.filter (fun index -> paired toMatch rna.[index]) [|low + 1..2..high|]
-                let count = bigint matches.Length * Array.sumBy (fun index -> 
+                let count = 
+                    bigint matches.Length 
+                    * (Array.map (fun index -> 
                         if index - low = 1 then bigint 1
                         else 
                             let inner = count (low + 1) (index - 1)
-                            if index + 1 < high then inner * count (index + 1) high 
-                            else inner) matches
+                            if index = high then inner
+                            else inner * count index high ) matches |> Array.reduce (*))
                 
                 cache.Add((low, high), count)
                 count
