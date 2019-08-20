@@ -53,8 +53,8 @@ let rec count low high =
                         if index - low = 1 then bigint 1
                         else 
                             let inner = count (low + 1) (index - 1)
-                            if index = high then inner
-                            else inner * count index high ) matches |> Array.reduce (*))
+                            if index >= high then inner
+                            else inner * count index high) matches |> Array.reduce (*))
                 
                 cache.Add((low, high), count)
                 count
