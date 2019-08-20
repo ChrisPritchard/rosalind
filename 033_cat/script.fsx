@@ -3,8 +3,17 @@
 
 let input = """
 >Rosalind_57
-AUAU
+AUAUAU
 """
+
+
+
+// AU AU AU
+// A UA UA U
+// AU A UA U
+// A UA U AU
+// A U AU A U
+
 // let input = """
 // >Rosalind_2527
 // UGAAUUAAUAUUACGUGGCCAAAUUAGAUCCCGGAUUUAAUCAUGUCGAAUAUUCUAUGC
@@ -25,24 +34,29 @@ let cache = System.Collections.Generic.Dictionary<int * int, bigint>()
 // to calculate, iterate through the rna:
 //      for each nuc, find all matches
 //      for each match, add all inner matches and all following matches
+// does this mean we only need to do the first? hmmmmmmmmmmmmmmmmmmmmmm
+// what does it mean to calculate matches? its a sum? so all matches times all sub matches for each match * all following matches for each match?
+// does that mean count matches, then multiply by inner and outer?
 
-let rec calc low high = 
+let rec count low high = 
     match cache.TryGetValue ((low, high)) with
     | true, v -> v
     | _ ->
-        let mutable result = bigint 0
-        for i in [low..high] do 
-           let nuc = rna.[i]
-           let mutable nucSum = bigint 1
-           for j in [i+1..high] do
-                if paired nuc rna.[j] then
-                   if j - i > 1 then
-                       nucSum <- nucSum * calc (i + 1) (j - 1)
-           result <- result + nucSum
-        cache.Add((low, high), result)
-        result
+            if low >= high then bigint 0
+            else
+                let toMatch = rna.[low]
+                let matches = Array.filter (fun index -> paired toMatch rna.[index]) [|low + 1..2..high|]
+                let count = bigint matches.Length * Array.sumBy (fun index -> 
+                        if index - low = 1 then bigint 1
+                        else 
+                            let inner = count (low + 1) (index - 1)
+                            if index + 1 < high then inner * count (index + 1) high 
+                            else inner) matches
+                
+                cache.Add((low, high), count)
+                count
 
-let result = calc 0 (rna.Length - 1)
+let result = count 0 (rna.Length - 1)
 printfn "Result mod 1 mil: %A" (result % bigint 1000000)
 
 // Inspired by: https://adijo.github.io/2016/01/13/rosalind-catalan-numbers-and-rna-secondary-structures/
