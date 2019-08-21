@@ -31,3 +31,13 @@ For a collection of strings and a positive integer k, the overlap graph for the 
 Given: A collection of DNA strings in FASTA format having total length at most 10 kbp.
 
 Return: The adjacency list corresponding to O3. You may return edges in any order.
+
+Sample Dataset
+
+```
+```
+
+Sample Output
+
+```
+```

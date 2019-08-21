@@ -23,3 +23,16 @@ Note that a matching contained in the basepair edges will represent one possibil
 Given: An RNA string s of length at most 80 bp having the same number of occurrences of 'A' as 'U' and the same number of occurrences of 'C' as 'G'.
 
 Return: The total possible number of perfect matchings of basepair edges in the bonding graph of s.
+
+Sample Dataset
+
+```
+>Rosalind_23
+AGCUAGUCAU
+```
+
+Sample Output
+
+```
+12
+```

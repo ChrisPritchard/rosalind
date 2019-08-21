@@ -27,3 +27,13 @@ Given: Six nonnegative integers, each of which does not exceed 20,000. The integ
     aa-aa
 
 Return: The expected number of offspring displaying the dominant phenotype in the next generation, under the assumption that every couple has exactly two offspring.
+
+Sample Dataset
+
+```
+```
+
+Sample Output
+
+```
+```

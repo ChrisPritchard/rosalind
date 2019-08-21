@@ -15,3 +15,23 @@ A signed permutation of length n is some ordering of the positive integers {1,2,
 Given: A positive integer n≤6.
 
 Return: The total number of signed permutations of length n, followed by a list of all such permutations (you may list the signed permutations in any order).
+
+Sample Dataset
+
+```
+2
+```
+
+Sample Output
+
+```
+8
+-1 -2
+-1 2
+1 -2
+1 2
+-2 -1
+-2 1
+2 -1
+2 1
+```

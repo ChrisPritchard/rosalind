@@ -19,3 +19,18 @@ Return: One collection of indices of s in which the symbols of t appear as a sub
 ## Extra Information
 
 For the mathematically inclined, we may equivalently say that t=t1t2⋯tm is a subsequence of s=s1s2⋯sn if the characters of t appear in the same order within s. Even more formally, a subsequence of s is a string si1si2…sik, where 1≤i1<i2⋯<ik≤n.
+
+Sample Dataset
+
+```
+>Rosalind_14
+ACGTACGTGACG
+>Rosalind_18
+GTA
+```
+
+Sample Output
+
+```
+3 8 10
+```

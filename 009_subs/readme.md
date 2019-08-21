@@ -25,3 +25,13 @@ The location of a substring s[j:k] is its beginning position j; note that t will
 
 Given: Two DNA strings s and t (each of length at most 1 kbp).
 Return: All locations of t as a substring of s.
+
+Sample Dataset
+
+```
+```
+
+Sample Output
+
+```
+```

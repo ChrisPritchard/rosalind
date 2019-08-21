@@ -19,6 +19,7 @@ Return: A list of all corrections in the form "[old read]->[new read]". (Each co
 
 Sample Dataset
 
+```
 >Rosalind_52
 TCATC
 >Rosalind_44
@@ -37,9 +38,12 @@ ATCAA
 TTGAT
 >Rosalind_18
 TTTCC
+```
 
 Sample Output
 
+```
 TTCAT->TTGAT
 GAGGA->GATGA
 TTTCC->TTTCA
+```

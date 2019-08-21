@@ -17,3 +17,13 @@ A permutation of length n is an ordering of the positive integers {1,2,…,n}. F
 Given: A positive integer n≤7.
 
 Return: The total number of permutations of length n, followed by a list of all such permutations (in any order).
+
+Sample Dataset
+
+```
+```
+
+Sample Output
+
+```
+```

@@ -17,3 +17,20 @@ For DNA strings s1 and s2 having the same length, their transition/transversion 
 Given: Two DNA strings s1 and s2 of equal length (at most 1 kbp).
 
 Return: The transition/transversion ratio R(s1,s2).
+
+Sample Dataset
+
+```
+>Rosalind_0209
+GCAACGCACAACGAAAACCCTTAGGGACTGGATTATTTCGTGATCGTTGTAGTTATTGGA
+AGTACGGGCATCAACCCAGTT
+>Rosalind_2200
+TTATCTGACAAAGAAAGCCGTCAACGGCTGGATAATTTCGCGATCGTGCTGGTTACTGGC
+GGTACGAGTGTTCCTTTGGGT
+```
+
+Sample Output
+
+```
+1.21428571429
+```
