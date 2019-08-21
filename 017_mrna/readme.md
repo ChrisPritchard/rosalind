@@ -24,12 +24,18 @@ Given: A protein string of length at most 1000 aa.0
 
 Return: The total number of different RNA strings from which the protein could have been translated, modulo 1,000,000. (Don't neglect the importance of the stop codon in protein translation.)
 
-Sample Dataset
+## Sample Dataset
 
 ```
+MA
 ```
 
-Sample Output
+## Sample Output
 
 ```
+12
 ```
+
+## Hint
+
+What does it mean intuitively to take a number modulo 1,000,000?

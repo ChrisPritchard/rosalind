@@ -29,12 +29,14 @@ Given: An RNA string s corresponding to a strand of mRNA (of length at most 10 k
 
 Return: The protein string encoded by s.
 
-Sample Dataset
+## Sample Dataset
 
 ```
+AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA
 ```
 
-Sample Output
+## Sample Output
 
 ```
+MAMAPRTEINSTRING
 ```

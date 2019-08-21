@@ -24,7 +24,7 @@ Given: A positive integer n (n≤1000) and an adjacency list corresponding to a 
 
 Return: The minimum number of edges that can be added to the graph to produce a tree.
 
-Sample Dataset
+## Sample Dataset
 
 ```
 10
@@ -36,7 +36,7 @@ Sample Dataset
 7 9
 ```
 
-Sample Output
+## Sample Output
 
 ```
 3

@@ -26,14 +26,14 @@ Given: An RNA string s having the same number of occurrences of 'A' as 'U' and t
 
 Return: The total number of noncrossing perfect matchings of basepair edges in the bonding graph of s, modulo 1,000,000.
 
-Sample Dataset
+## Sample Dataset
 
 ```
 >Rosalind_57
 AUAU
 ```
 
-Sample Output
+## Sample Output
 
 ```
 2

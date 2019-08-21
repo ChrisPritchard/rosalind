@@ -25,13 +25,13 @@ The standard weight assigned to each member of the 20-symbol amino acid alphabet
 Given: A protein string P of length at most 1000 aa. 
 Return: The total weight of P. Consult the monoisotopic mass table.
 
-Sample Dataset
+## Sample Dataset
 
 ```
 SKADYEK
 ```
 
-Sample Output
+## Sample Output
 
 ```
 821.392

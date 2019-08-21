@@ -20,12 +20,14 @@ Given a DNA string t corresponding to a coding strand, its transcribed RNA strin
 Given: A DNA string t having length at most 1000 nt.
 Return: The transcribed RNA string of t.
 
-Sample Dataset
+## Sample Dataset
 
 ```
+GATGGAACTTGACTACGTAAATT
 ```
 
-Sample Output
+## Sample Output
 
 ```
+GAUGGAACUUGACUACGUAAAUU
 ```

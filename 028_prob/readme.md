@@ -28,14 +28,14 @@ Given: A DNA string s of length at most 100 bp and an array A containing at most
 
 Return: An array B having the same length as A in which B[k] represents the common logarithm of the probability that a random string constructed with the GC-content found in A[k] will match s exactly.
 
-Sample Dataset
+## Sample Dataset
 
 ```
 ACGATACAA
 0.129 0.287 0.423 0.476 0.641 0.742 0.783
 ```
 
-Sample Output
+## Sample Output
 
 ```
 -5.737 -5.217 -5.263 -5.360 -5.958 -6.628 -7.009

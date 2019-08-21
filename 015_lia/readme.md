@@ -28,12 +28,18 @@ Given: Two positive integers k (k≤7) and N (N≤2k). In this problem, we begin
 
 Return: The probability that at least N Aa Bb organisms will belong to the k-th generation of Tom's family tree (don't count the Aa Bb mates at each level). Assume that Mendel's second law holds for the factors.
 
-Sample Dataset
+## Sample Dataset
 
 ```
+2 1
 ```
 
-Sample Output
+## Sample Output
 
 ```
+0.684
 ```
+
+## An Example of Dependent Random Variables
+
+Two random variables are dependent if they are not independent. For an example of dependent random variables, recall our example in “Mendel's First Law” of drawing two balls from a bag containing 3 red balls and 2 blue balls. If X represents the color of the first ball drawn and Y is the color of the second ball drawn (without replacement), then let A be the event "X is red" and B be the event Y is blue. In this case, the probability tree diagram illustrated in Figure 3 demonstrates that Pr(A and B)=310. Yet we can also see that Pr(A)=35 and Pr(B)=310+110=25. We can now see that Pr(A and B)≠Pr(A)×Pr(B).

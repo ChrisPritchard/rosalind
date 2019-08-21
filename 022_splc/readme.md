@@ -24,7 +24,7 @@ Given: A DNA string s (of length at most 1 kbp) and a collection of substrings o
 
 Return: A protein string resulting from transcribing and translating the exons of s. (Note: Only one solution will exist for the dataset provided.)
 
-Sample Dataset
+## Sample Dataset
 
 ```
 >Rosalind_10
@@ -35,7 +35,7 @@ ATCGGTCGAA
 ATCGGTCGAGCGTGT
 ```
 
-Sample Output
+## Sample Output
 
 ```
 MVYIADKQHVASREAYGHMFKVCA

@@ -18,7 +18,7 @@ Given: Two DNA strings s1 and s2 of equal length (at most 1 kbp).
 
 Return: The transition/transversion ratio R(s1,s2).
 
-Sample Dataset
+## Sample Dataset
 
 ```
 >Rosalind_0209
@@ -29,7 +29,7 @@ TTATCTGACAAAGAAAGCCGTCAACGGCTGGATAATTTCGCGATCGTGCTGGTTACTGGC
 GGTACGAGTGTTCCTTTGGGT
 ```
 
-Sample Output
+## Sample Output
 
 ```
 1.21428571429

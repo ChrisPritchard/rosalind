@@ -17,7 +17,7 @@ Given: A collection of up to 1000 reads of equal length (at most 50 bp) in FASTA
 
 Return: A list of all corrections in the form "[old read]->[new read]". (Each correction must be a single symbol substitution, and you may return the corrections in any order.)
 
-Sample Dataset
+## Sample Dataset
 
 ```
 >Rosalind_52
@@ -40,7 +40,7 @@ TTGAT
 TTTCC
 ```
 
-Sample Output
+## Sample Output
 
 ```
 TTCAT->TTGAT

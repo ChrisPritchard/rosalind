@@ -22,7 +22,7 @@ The dataset is guaranteed to satisfy the following condition: there exists a uni
 
 Return: A shortest superstring containing all the given strings (thus corresponding to a reconstructed chromosome).
 
-Sample Dataset
+## Sample Dataset
 
 ```
 >Rosalind_56
@@ -35,7 +35,7 @@ AGACCTGCCG
 GCCGGAATAC
 ```
 
-Sample Output
+## Sample Output
 
 ```
 ATTAGACCTGCCGGAATAC

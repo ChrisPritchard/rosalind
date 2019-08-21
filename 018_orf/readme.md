@@ -18,12 +18,18 @@ Given: A DNA string s of length at most 1 kbp in FASTA format.
 
 Return: Every distinct candidate protein string that can be translated from ORFs of s. Strings can be returned in any order.
 
-Sample Dataset
+## Sample Dataset
 
 ```
+>Rosalind_99
+AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG
 ```
 
-Sample Output
+## Sample Output
 
 ```
+MLLGSFRLIPKETLIQVAGSSPCNLS
+M
+MGMTPRLGLESLLE
+MTPRLGLESLLE
 ```

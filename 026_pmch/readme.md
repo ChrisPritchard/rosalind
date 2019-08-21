@@ -24,14 +24,14 @@ Given: An RNA string s of length at most 80 bp having the same number of occurre
 
 Return: The total possible number of perfect matchings of basepair edges in the bonding graph of s.
 
-Sample Dataset
+## Sample Dataset
 
 ```
 >Rosalind_23
 AGCUAGUCAU
 ```
 
-Sample Output
+## Sample Output
 
 ```
 12
