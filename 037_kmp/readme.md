@@ -36,3 +36,7 @@ CAGCATGGTATCACAGCAGAG
 ```
 0 0 0 1 2 0 0 0 0 0 0 1 2 1 2 3 4 5 3 0 0
 ```
+
+## Extra Information
+
+If you would like a more precise technical explanation of the Knuth-Morris-Pratt algorithm, please take a look at this site: http://www.inf.fh-flensburg.de/lang/algorithmen/pattern/kmpen.htm
