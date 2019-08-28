@@ -31,3 +31,5 @@ let result = T |> Array.map string |> String.concat " "
 
 System.IO.File.WriteAllText ("./output.txt", result)
 printfn "Result written to output.txt"
+
+// fail array (fail function) algorithm explanation derived from here: http://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/StringMatch/kuthMP.htm
