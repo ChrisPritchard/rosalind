@@ -39,20 +39,24 @@ let permutations (s: string) =
 let minReplacements (a: string, b: string) =
     if a = b then 0
     else 
-        let mutable paths = [[b]]
+        let maxSize = Seq.zip a b |> Seq.filter (fun (a, b) -> a <> b) |> Seq.length
+        let mutable paths = [b, Set.ofList [b]]
         let mutable found = None
-        while found = None do
-            paths <- 
-                paths 
-                |> List.collect (fun path ->
-                    let soFar = Set.ofList path
-                    permutations (List.head path)
-                    |> Seq.filter (fun n -> not (Set.contains n soFar))
-                    |> Seq.map (fun n -> 
-                        if n = a then found <- Some soFar.Count
-                        n::path)
-                    |> Seq.toList)
-        found.Value
+        while found = None && paths <> [] do
+            let size = Set.count (snd paths.[0])
+            printfn "%i" size
+            if size = maxSize then paths <- []
+            else
+                paths <- 
+                    paths 
+                    |> List.collect (fun (head, soFar) ->
+                        permutations head
+                        |> Seq.filter (fun n -> not (Set.contains n soFar))
+                        |> Seq.map (fun n -> 
+                            if n = a then found <- Some soFar.Count
+                            n, Set.add n soFar)
+                        |> Seq.toList)
+        match found with Some v -> v | _ -> maxSize
 
 let result = sets |> Seq.map (minReplacements >> string) |> String.concat " "
 printfn "Result: %s" result
