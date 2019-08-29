@@ -25,27 +25,31 @@ let sets =
 let replacements (a: string, b: string) =
     let visited = System.Collections.Generic.HashSet<_> [b]
 
-    let rec searcher acc (c: string) =
-        let allOptions = 
-            [
-                for i in [0..c.Length-1] do
-                    for j in [0..c.Length-1] do
-                        if i <> j then
-                            let da = c.ToCharArray ()
-                            let dai = da.[i]
-                            da.[i] <- da.[j]
-                            da.[j] <- dai
-                            let d = System.String da
-                            if not (visited.Contains d) then
-                                visited.Add d |> ignore
-                                yield d
-            ]
-        if visited.Contains a then Some (acc + 1)
-        else if List.isEmpty allOptions then None
+    let mutable found = None
+    let permutations (s: string) acc = 
+        [
+            for i in [0..s.Length-1] do
+                for j in [0..s.Length-1] do
+                    if i <> j then
+                        let da = s.ToCharArray ()
+                        let dai = da.[i]
+                        da.[i] <- da.[j]
+                        da.[j] <- dai
+                        let d = System.String da
+                        if not (visited.Contains d) then
+                            if d = a then found <- Some acc
+                            visited.Add d |> ignore
+                            yield d, acc + 1
+        ]
+
+    let rec searcher (options: List<string * int>) =
+        if Seq.isEmpty options then None
         else
-            Seq.min (Seq.choose (searcher (acc + 1)) allOptions) |> Some
+            let newOptions = List.collect (fun (s, acc) -> permutations s acc) options
+            if found <> None then found
+            else searcher newOptions
     
-    searcher 0 b
+    searcher [b, 0]
 
 let result = sets |> Seq.map (replacements >> string) |> String.concat " "
 printfn "Result: %s" result
