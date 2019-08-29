@@ -41,7 +41,7 @@ let replacements (a: string, b: string) =
                             if not (visited.Contains d) then
                                 if d = a then 
                                     match found with 
-                                    | Some accs when accs > acc -> found <- Some (acc + 1)
+                                    | Some accs when accs > (acc + 1) -> found <- Some (acc + 1)
                                     | None -> found <- Some (acc + 1)
                                     | _ -> ()
                                 visited.Add d |> ignore
