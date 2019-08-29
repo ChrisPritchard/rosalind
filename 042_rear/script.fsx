@@ -22,44 +22,24 @@ let sets =
     |> Array.chunkBySize 2
     |> Array.map (fun a -> line a.[0], line a.[1])
 
-let replacements (a: string, b: string) =
+let permutations (s: string) =
+    let swap i j =
+        let da = s.ToCharArray ()
+        let dai = da.[i]
+        da.[i] <- da.[j]
+        da.[j] <- dai
+        System.String da
+    seq {
+        for i in [0..s.Length-1] do
+            for j in [0..s.Length-1] do
+                if i <> j then
+                    yield swap i j
+    } |> Seq.distinct
+
+let minReplacements (a: string, b: string) =
     if a = b then 0
     else 
-        let visited = System.Collections.Generic.HashSet<_> [b]
+        1
 
-        let mutable found = None
-        let permutations (s: string) acc = 
-            if acc > s.Length then []
-            else 
-            [
-                for i in [0..s.Length-1] do
-                    for j in [0..s.Length-1] do
-                        if i <> j then
-                            let da = s.ToCharArray ()
-                            let dai = da.[i]
-                            da.[i] <- da.[j]
-                            da.[j] <- dai
-                            let d = System.String da
-                            if d = a then 
-                                match found with 
-                                | Some accs when accs > (acc + 1) -> found <- Some (acc + 1)
-                                | None -> found <- Some (acc + 1)
-                                | _ -> ()
-                            visited.Add d |> ignore
-                            yield d, acc + 1
-            ]
-
-        let rec searcher (options: List<string * int>) =
-            if Seq.isEmpty options then found.Value
-            else
-                let newOptions = List.collect (fun (s, acc) -> permutations s acc) options
-                let filteredOptions = 
-                    match found with 
-                    | Some accs -> List.filter (fun (_, acc) -> acc < accs) newOptions
-                    | _ -> newOptions
-                searcher filteredOptions
-        
-        searcher [b, 0]
-
-let result = sets |> Seq.map (replacements >> string) |> String.concat " "
+let result = sets |> Seq.map (minReplacements >> string) |> String.concat " "
 printfn "Result: %s" result
