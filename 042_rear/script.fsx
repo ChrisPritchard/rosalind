@@ -23,33 +23,42 @@ let sets =
     |> Array.map (fun a -> line a.[0], line a.[1])
 
 let replacements (a: string, b: string) =
-    let visited = System.Collections.Generic.HashSet<_> [b]
+    if a = b then 0
+    else 
+        let visited = System.Collections.Generic.HashSet<_> [b]
 
-    let mutable found = None
-    let permutations (s: string) acc = 
-        [
-            for i in [0..s.Length-1] do
-                for j in [0..s.Length-1] do
-                    if i <> j then
-                        let da = s.ToCharArray ()
-                        let dai = da.[i]
-                        da.[i] <- da.[j]
-                        da.[j] <- dai
-                        let d = System.String da
-                        if not (visited.Contains d) then
-                            if d = a then found <- Some acc
-                            visited.Add d |> ignore
-                            yield d, acc + 1
-        ]
+        let mutable found = None
+        let permutations (s: string) acc = 
+            [
+                for i in [0..s.Length-1] do
+                    for j in [0..s.Length-1] do
+                        if i <> j then
+                            let da = s.ToCharArray ()
+                            let dai = da.[i]
+                            da.[i] <- da.[j]
+                            da.[j] <- dai
+                            let d = System.String da
+                            if not (visited.Contains d) then
+                                if d = a then 
+                                    match found with 
+                                    | Some accs when accs > acc -> found <- Some (acc + 1)
+                                    | None -> found <- Some (acc + 1)
+                                    | _ -> ()
+                                visited.Add d |> ignore
+                                yield d, acc + 1
+            ]
 
-    let rec searcher (options: List<string * int>) =
-        if Seq.isEmpty options then None
-        else
-            let newOptions = List.collect (fun (s, acc) -> permutations s acc) options
-            if found <> None then found
-            else searcher newOptions
-    
-    searcher [b, 0]
+        let rec searcher (options: List<string * int>) =
+            if Seq.isEmpty options then found.Value
+            else
+                let newOptions = List.collect (fun (s, acc) -> permutations s acc) options
+                let filteredOptions = 
+                    match found with 
+                    | Some accs -> List.filter (fun (_, acc) -> acc < accs) newOptions
+                    | _ -> newOptions
+                searcher filteredOptions
+        
+        searcher [b, 0]
 
 let result = sets |> Seq.map (replacements >> string) |> String.concat " "
 printfn "Result: %s" result
