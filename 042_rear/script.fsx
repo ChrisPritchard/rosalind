@@ -29,6 +29,8 @@ let replacements (a: string, b: string) =
 
         let mutable found = None
         let permutations (s: string) acc = 
+            if acc > s.Length then []
+            else 
             [
                 for i in [0..s.Length-1] do
                     for j in [0..s.Length-1] do
@@ -38,14 +40,13 @@ let replacements (a: string, b: string) =
                             da.[i] <- da.[j]
                             da.[j] <- dai
                             let d = System.String da
-                            if not (visited.Contains d) then
-                                if d = a then 
-                                    match found with 
-                                    | Some accs when accs > (acc + 1) -> found <- Some (acc + 1)
-                                    | None -> found <- Some (acc + 1)
-                                    | _ -> ()
-                                visited.Add d |> ignore
-                                yield d, acc + 1
+                            if d = a then 
+                                match found with 
+                                | Some accs when accs > (acc + 1) -> found <- Some (acc + 1)
+                                | None -> found <- Some (acc + 1)
+                                | _ -> ()
+                            visited.Add d |> ignore
+                            yield d, acc + 1
             ]
 
         let rec searcher (options: List<string * int>) =
