@@ -20,11 +20,7 @@ let sets =
     let line (s:string) = s.Replace("10","X").Replace(" ", "")
     input.Split("\r\n".ToCharArray(), System.StringSplitOptions.RemoveEmptyEntries)
     |> Array.chunkBySize 2
-    |> Array.map (fun a -> 
-        Seq.zip (line a.[0]) (line a.[1]) 
-        |> Seq.filter (fun (a, b) -> a <> b) 
-        |> Seq.fold (fun (aas, bas) (a, b) -> 
-            aas + string a, bas + string b) ("", ""))
+    |> Array.map (fun a -> line a.[0], line a.[1])
 
 let permutations (s: string) =
     let swap i j =
@@ -43,7 +39,7 @@ let permutations (s: string) =
 let minReplacements (a: string, b: string) =
     if a = b then 0
     else 
-        let maxSize = a.Length - 1 // max naieve replacements is difference length - 1
+        let maxSize = (Seq.zip a b |> Seq.filter (fun (a, b) -> a <> b) |> Seq.length) - 1 // max naieve replacements is difference length - 1
         let mutable paths = [|b, Set.ofList [b]|]
         let mutable found = None
         let visited = System.Collections.Generic.HashSet [b]
