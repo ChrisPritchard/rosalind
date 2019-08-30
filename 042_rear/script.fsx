@@ -40,9 +40,9 @@ let minReplacements (a: string, b: string) =
     if a = b then 0
     else 
         let maxSize = (Seq.zip a b |> Seq.filter (fun (a, b) -> a <> b) |> Seq.length) - 1 // max naieve replacements is difference length - 1
-        let mutable paths = [|b, Set.ofList [b]|]
+        let mutable paths = [|a, Set.ofList [a]|]
         let mutable found = None
-        let visited = System.Collections.Generic.HashSet [b]
+        let visited = System.Collections.Generic.HashSet [a]
         
         while found = None do
             let size = Set.count (snd paths.[0])
@@ -57,7 +57,7 @@ let minReplacements (a: string, b: string) =
                             not (Set.contains n soFar) && 
                             not (visited.Contains n))
                         |> Seq.map (fun n -> 
-                            if n = a then found <- Some soFar.Count
+                            if n = b then found <- Some soFar.Count
                             visited.Add n |> ignore
                             n, Set.add n soFar)
                         |> Seq.toArray)
