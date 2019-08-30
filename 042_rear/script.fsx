@@ -1,19 +1,19 @@
 
 let input = """
-1 2 3 4 5 6 7 8 9 10
-3 1 5 2 7 4 9 6 10 8
+6 3 5 7 8 10 1 4 2 9
+3 5 2 7 8 1 9 6 4 10
 
-3 10 8 2 5 4 7 1 6 9
-5 2 3 1 7 4 10 8 6 9
+6 1 9 2 10 7 5 4 3 8
+4 2 1 3 6 5 10 7 9 8
 
-8 6 7 9 4 1 3 10 2 5
-8 2 7 6 9 1 5 3 10 4
+6 4 10 5 9 2 3 7 8 1
+2 1 10 9 5 6 7 4 3 8
 
-3 9 10 4 1 8 6 7 5 2
-2 9 8 5 1 7 3 4 6 10
+3 1 4 7 6 2 10 5 8 9
+4 3 6 1 10 7 8 2 9 5
 
-1 2 3 4 5 6 7 8 9 10
-1 2 3 4 5 6 7 8 9 10
+5 3 8 1 6 10 9 7 2 4
+5 10 2 8 1 3 4 9 7 6
 """
 
 let sets = 
@@ -50,3 +50,7 @@ let minReversals (a: string, b: string) =
 
 let result = sets |> Seq.map (minReversals >> string) |> String.concat " "
 printfn "Result: %s" result
+
+// This is a slow and brute-force solution, but it works. Its also my tenth version, 
+// but the first after I read the problem properly: I initially thought the only changes
+// allowed were character swaps - however a reversal is actually ANY SIZE subsection reversed.
