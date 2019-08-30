@@ -22,46 +22,31 @@ let sets =
     |> Array.chunkBySize 2
     |> Array.map (fun a -> line a.[0], line a.[1])
 
-let permutations (s: string) =
-    let swap i j =
-        let da = s.ToCharArray ()
-        let dai = da.[i]
-        da.[i] <- da.[j]
-        da.[j] <- dai
-        System.String da
-    seq {
-        for i in [0..s.Length-1] do
-            for j in [0..s.Length-1] do
-                if i <> j then
-                    yield swap i j
-    } |> Seq.distinct
+let minReversals (a: string, b: string) =
+    
+    let visited = System.Collections.Generic.HashSet<_> [a]
 
-let minReplacements (a: string, b: string) =
-    if a = b then 0
-    else 
-        let maxSize = (Seq.zip a b |> Seq.filter (fun (a, b) -> a <> b) |> Seq.length) - 1 // max naieve replacements is difference length - 1
-        let mutable paths = [|a, Set.ofList [a]|]
-        let mutable found = None
-        let visited = System.Collections.Generic.HashSet [a]
-        
-        while found = None do
-            let size = Set.count (snd paths.[0])
-            printfn "%i: %i" size paths.Length
-            if size = maxSize then found <- Some maxSize
-            else
-                paths <- 
-                    paths 
-                    |> Array.collect (fun (head, soFar) ->
-                        permutations head
-                        |> Seq.filter (fun n -> 
-                            not (Set.contains n soFar) && 
-                            not (visited.Contains n))
-                        |> Seq.map (fun n -> 
-                            if n = b then found <- Some soFar.Count
-                            visited.Add n |> ignore
-                            n, Set.add n soFar)
-                        |> Seq.toArray)
-        match found with Some v -> v | _ -> maxSize
+    let allReversals (s: string) =
+        [|
+            for i in [0..s.Length - 1] do
+                for j = 1 to s.Length - 1 - i do 
+                    let section = s.ToCharArray().[i..i+j] |> Array.rev |> System.String
+                    let result = 
+                        if section.Length = s.Length then section
+                        else if i = 0 then section + s.[section.Length..]
+                        else if s.Length - section.Length = i then s.[0..i-1] + section
+                        else s.[0..i-1] + section + s.[j+i+1..]
+                    if not (visited.Contains result) then
+                        visited.Add result |> ignore
+                        yield result
+        |]
 
-let result = sets |> Seq.map (minReplacements >> string) |> String.concat " "
+    let mutable paths = [|a|]
+    let mutable reversals = 0
+    while not (visited.Contains b) do
+        paths <- Array.collect allReversals paths
+        reversals <- reversals + 1
+    reversals
+
+let result = sets |> Seq.map (minReversals >> string) |> String.concat " "
 printfn "Result: %s" result
