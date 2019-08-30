@@ -20,7 +20,11 @@ let sets =
     let line (s:string) = s.Replace("10","X").Replace(" ", "")
     input.Split("\r\n".ToCharArray(), System.StringSplitOptions.RemoveEmptyEntries)
     |> Array.chunkBySize 2
-    |> Array.map (fun a -> line a.[0], line a.[1])
+    |> Array.map (fun a -> 
+        Seq.zip (line a.[0]) (line a.[1]) 
+        |> Seq.filter (fun (a, b) -> a <> b) 
+        |> Seq.fold (fun (aas, bas) (a, b) -> 
+            aas + string a, bas + string b) ("", ""))
 
 let permutations (s: string) =
     let swap i j =
@@ -39,23 +43,28 @@ let permutations (s: string) =
 let minReplacements (a: string, b: string) =
     if a = b then 0
     else 
-        let maxSize = Seq.zip a b |> Seq.filter (fun (a, b) -> a <> b) |> Seq.length
-        let mutable paths = [b, Set.ofList [b]]
+        let maxSize = a.Length - 1 // max naieve replacements is difference length - 1
+        let mutable paths = [|b, Set.ofList [b]|]
         let mutable found = None
-        while found = None && paths <> [] do
+        let visited = System.Collections.Generic.HashSet [b]
+        
+        while found = None do
             let size = Set.count (snd paths.[0])
-            printfn "%i" size
-            if size = maxSize then paths <- []
+            printfn "%i: %i" size paths.Length
+            if size = maxSize then found <- Some maxSize
             else
                 paths <- 
                     paths 
-                    |> List.collect (fun (head, soFar) ->
+                    |> Array.collect (fun (head, soFar) ->
                         permutations head
-                        |> Seq.filter (fun n -> not (Set.contains n soFar))
+                        |> Seq.filter (fun n -> 
+                            not (Set.contains n soFar) && 
+                            not (visited.Contains n))
                         |> Seq.map (fun n -> 
                             if n = a then found <- Some soFar.Count
+                            visited.Add n |> ignore
                             n, Set.add n soFar)
-                        |> Seq.toList)
+                        |> Seq.toArray)
         match found with Some v -> v | _ -> maxSize
 
 let result = sets |> Seq.map (minReplacements >> string) |> String.concat " "
