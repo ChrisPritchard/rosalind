@@ -1,7 +1,7 @@
 
 let input = """
-90000 0.6
-ATAGCCGA
+83268 0.568095
+GATAATGT
 """
 
 let N, x, s = 
@@ -19,25 +19,8 @@ let p =
         | c -> failwith ("invalid char: " + string c))
     |> Seq.reduce (*)
 
-//taken from my lia solution
-let mutable factCache = [0., 1.] |> Map.ofList
-let rec fact (n: float) = 
-    match Map.tryFind n factCache with
-    | Some v -> v
-    | _ ->
-        let v = n * fact (n - 1.)
-        factCache <- Map.add n v factCache
-        v
+let np = 1. - p // odds of not being equal to s
+let NP = Array.create N np |> Array.reduce (*) // odds of N strings ALL not being equal to s
+let result = 1. - NP // odds of AT LEAST one string in N being equal to s
 
-
-let pmf p k n = 
-    let n = float n
-    let k = float k
-    // binomial coefficient (from n choose k)
-    let nCk = fact k / (fact n * fact (k - n))
-    nCk * (p ** n) * ((1. - p) ** (k - n))  
-
-let result = [1..N] |> List.sumBy (fun k -> pmf p N k)
 printfn "%f" result
-
-type Foo = Foo of name:string * count:int
