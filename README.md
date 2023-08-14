@@ -1,5 +1,6 @@
-# rosalind
+# Rosalind
 
-My solutions to [rosalind](http://rosalind.info) exercises, in F#
+My solutions to [rosalind](http://rosalind.info) exercises, in Rust
 
-These have all been written as seperate FSX script files, run through F# Interactive
+Older solutions done in F# are under [a subfolder](./old_fsharp/)
+
