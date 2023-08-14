@@ -1,11 +1,17 @@
 
 mod dna;
 mod rna;
+mod revc;
 
 fn main() {
-    print!("first problem, DNA:\n\t");
+    println!("problem solutions, labelled by their problem code:");
+
+    print!("\nDNA:\n\t");
     dna::solve();
 
-    print!("second problem, RNA:\n\t");
+    print!("\nRNA:\n\t");
     rna::solve();
+
+    print!("\nREVC:\n\t");
+    revc::solve();
 }
