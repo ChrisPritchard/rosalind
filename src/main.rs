@@ -2,6 +2,7 @@
 mod dna;
 mod rna;
 mod revc;
+mod fib;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -14,4 +15,7 @@ fn main() {
 
     print!("\nREVC:\n\t");
     revc::solve();
+
+    print!("\nFIB:\n\t");
+    fib::solve();
 }
