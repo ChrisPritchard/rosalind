@@ -5,6 +5,7 @@ mod revc;
 mod fib;
 mod gc;
 mod hamm;
+mod iprb;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -26,4 +27,7 @@ fn main() {
 
     print!("\nHAMM:\n\t");
     hamm::solve();
+
+    print!("\nIPRB:\n\t");
+    iprb::solve();
 }
