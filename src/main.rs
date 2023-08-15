@@ -1,3 +1,4 @@
+mod util;
 
 mod dna;
 mod rna;
@@ -6,6 +7,7 @@ mod fib;
 mod gc;
 mod hamm;
 mod iprb;
+mod prot;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -30,4 +32,7 @@ fn main() {
 
     print!("\nIPRB:\n\t");
     iprb::solve();
+
+    print!("\nPROT:\n\t");
+    prot::solve();
 }
