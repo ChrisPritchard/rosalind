@@ -4,6 +4,7 @@ mod rna;
 mod revc;
 mod fib;
 mod gc;
+mod hamm;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -22,4 +23,7 @@ fn main() {
 
     print!("\nGC:\n\t");
     gc::solve();
+
+    print!("\nHAMM:\n\t");
+    hamm::solve();
 }
