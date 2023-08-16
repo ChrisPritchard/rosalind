@@ -14,33 +14,33 @@ mod cons;
 fn main() {
     println!("problem solutions, labelled by their problem code:");
 
-    print!("\nDNA:\n\t");
+    print!("\nDNA:\n");
     dna::solve();
 
-    print!("\nRNA:\n\t");
+    print!("\nRNA:\n");
     rna::solve();
 
-    print!("\nREVC:\n\t");
+    print!("\nREVC:\n");
     revc::solve();
 
-    print!("\nFIB:\n\t");
+    print!("\nFIB:\n");
     fib::solve();
 
-    print!("\nGC:\n\t");
+    print!("\nGC:\n");
     gc::solve();
 
-    print!("\nHAMM:\n\t");
+    print!("\nHAMM:\n");
     hamm::solve();
 
-    print!("\nIPRB:\n\t");
+    print!("\nIPRB:\n");
     iprb::solve();
 
-    print!("\nPROT:\n\t");
+    print!("\nPROT:\n");
     prot::solve();
 
-    print!("\nSUBS:\n\t");
+    print!("\nSUBS:\n");
     subs::solve();
 
-    print!("\nCONS:\n\t");
+    print!("\nCONS:\n");
     cons::solve();
 }

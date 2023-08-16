@@ -21,7 +21,7 @@ const DATASET: &str = include_str!("../datasets/gc.txt");
 pub fn solve() {
     let fasta = fasta_from(DATASET);
     let (label, gc) = fasta.iter().map(|(label, dna)| (label, gc_from(dna))).max_by(|(_, x), (_, y)| x.total_cmp(&y)).unwrap();
-    println!("{label}\n\t{gc:.6}")
+    println!("{label}\n{gc:.6}")
 }
 
 fn fasta_from(dataset: &str) -> HashMap<String, String> {

@@ -36,15 +36,9 @@ pub fn solve() {
     let mut t_counts = String::from("T: ");
 
     for (a, c, g, t) in result.iter() {
-        let top = if a > c && a > g && a > t { 
-                'A' 
-            } else if c > a && c > g && c > t { 
-                'C' 
-            } else if g > a && g > c && g > t { 
-                'G' 
-            } else {
-                'T'
-            };
+        let as_slice = [a,c,g,t];
+        let max = *as_slice.iter().max().unwrap();
+        let top = if max == a {'A'} else if max == c {'C'} else if max == g {'G'} else {'T'};
         consensus.push(top);
         a_counts.push_str(&format!("{a} "));
         c_counts.push_str(&format!("{c} "));
