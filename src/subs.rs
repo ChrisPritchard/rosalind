@@ -19,7 +19,7 @@ const DATASET: &str = include_str!("../datasets/subs.txt");
 pub fn solve() {
     let lines: Vec<_> = DATASET.lines().collect();
     let sequence: Vec<_> = lines[0].chars().collect();
-    let subsequence: Vec<_> = lines[1].chars().collect();;
+    let subsequence: Vec<_> = lines[1].chars().collect();
     
     let mut result = String::new();
     for i in 0..(sequence.len() - subsequence.len()) {

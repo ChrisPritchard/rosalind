@@ -9,6 +9,7 @@ mod hamm;
 mod iprb;
 mod prot;
 mod subs;
+mod cons;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -39,4 +40,7 @@ fn main() {
 
     print!("\nSUBS:\n\t");
     subs::solve();
+
+    print!("\nCONS:\n\t");
+    cons::solve();
 }
