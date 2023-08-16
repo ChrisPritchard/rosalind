@@ -10,6 +10,7 @@ mod iprb;
 mod prot;
 mod subs;
 mod cons;
+mod fibd;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -43,4 +44,7 @@ fn main() {
 
     print!("\nCONS:\n");
     cons::solve();
+
+    print!("\nFIBD:\n");
+    fibd::solve();
 }
