@@ -11,6 +11,7 @@ mod prot;
 mod subs;
 mod cons;
 mod fibd;
+mod grph;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -47,4 +48,7 @@ fn main() {
 
     print!("\nFIBD:\n");
     fibd::solve();
+
+    print!("\nGRPH:\n");
+    grph::solve();
 }
