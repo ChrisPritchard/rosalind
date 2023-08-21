@@ -56,36 +56,31 @@ struct SuffixNode {
     children: HashMap<char, SuffixNode>
 }
 
-fn attach(node: SuffixNode, chars: Vec<char>) -> SuffixNode {
+fn attach(node: &mut SuffixNode, chars: Vec<char>) {
     if chars.len() == 0 {
-        return node;
+        return;
     }
 
-    let first = &chars[0];
+    let first = chars[0].clone();
 
     if node.children.contains_key(&chars[0]) {
-        node.children[first] = attach(node.children[first], chars[1..]);
+        attach(&mut node.children[&first], chars[1..].to_vec());
     } else {
-        let new_child = SuffixNode { children: HashMap::new() };
-        node.children.insert(first, attach(new_child, chars[1..]));
+        let mut new_child = SuffixNode { children: HashMap::new() };
+        attach(&mut new_child, chars[1..].to_vec());
+        node.children.insert(first, new_child);
     }
-
-    node
 }
 
 pub fn suffix_tree(s: String) {
 
-    let letters: Vec<_> = s.chars().collect();
-    let mut root = HashMap::new();
-    let mut i = letters.len();
+    let chars: Vec<_> = s.chars().collect();
+    let mut root = SuffixNode { children: HashMap::new() };
+    let mut i = chars.len();
 
     while i > 0 {
         i -= 1;
-
-        let c = letters[i];
-        if root.contains_key(&c) {
-            root[&c] = attach(root[&c], letters[i+1]);
-        }
+        attach(&mut root, chars[i..].to_vec())
     }
     // create nodes, each node being a tuple of subsequent nodes?
     // or a String of Strings... or a struct with a collection of child nodes
