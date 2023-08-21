@@ -75,6 +75,8 @@ impl Display for SuffixNode {
 
 fn attach(node: &mut SuffixNode, chars: Vec<char>) {
     if chars.len() == 0 {
+        let new_child = SuffixNode { children: HashMap::new() };
+        node.children.insert('$', new_child);
         return;
     }
 
