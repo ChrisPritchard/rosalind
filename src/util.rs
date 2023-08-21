@@ -52,7 +52,7 @@ UGG W      CGG R      AGG R      GGG G".lines();
     result
 }
 
-struct SuffixNode {
+pub struct SuffixNode {
     children: HashMap<char, SuffixNode>
 }
 
@@ -64,7 +64,7 @@ fn attach(node: &mut SuffixNode, chars: Vec<char>) {
     let first = chars[0].clone();
 
     if node.children.contains_key(&chars[0]) {
-        attach(&mut node.children[&first], chars[1..].to_vec());
+        attach(&mut node.children.get_mut(&first).unwrap(), chars[1..].to_vec());
     } else {
         let mut new_child = SuffixNode { children: HashMap::new() };
         attach(&mut new_child, chars[1..].to_vec());
@@ -72,7 +72,7 @@ fn attach(node: &mut SuffixNode, chars: Vec<char>) {
     }
 }
 
-pub fn suffix_tree(s: String) {
+pub fn suffix_tree(s: String) -> SuffixNode {
 
     let chars: Vec<_> = s.chars().collect();
     let mut root = SuffixNode { children: HashMap::new() };
@@ -82,6 +82,6 @@ pub fn suffix_tree(s: String) {
         i -= 1;
         attach(&mut root, chars[i..].to_vec())
     }
-    // create nodes, each node being a tuple of subsequent nodes?
-    // or a String of Strings... or a struct with a collection of child nodes
+    
+    root
 }
