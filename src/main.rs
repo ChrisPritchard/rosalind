@@ -13,6 +13,7 @@ mod cons;
 mod fibd;
 mod grph;
 mod iev;
+mod lcsm;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
@@ -55,4 +56,7 @@ fn main() {
 
     print!("\nIEV:\n");
     iev::solve();
+
+    print!("\nLCSM:\n");
+    lcsm::solve();
 }
