@@ -59,4 +59,7 @@ fn main() {
 
     print!("\nLCSM:\n");
     lcsm::solve();
+
+    let res = util::suffix_tree("nonsense".to_string());
+    println!("{}", res);
 }

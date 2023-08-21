@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::Display};
 
 
 pub fn read_fasta(source: &str) -> Vec<(String, String)> {
@@ -54,6 +54,23 @@ UGG W      CGG R      AGG R      GGG G".lines();
 
 pub struct SuffixNode {
     children: HashMap<char, SuffixNode>
+}
+
+impl Display for SuffixNode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if self.children.is_empty() {
+            return write!(f, "$");
+        }
+
+        for (c, child) in self.children.iter() {
+            if child.children.is_empty() {
+                let _ = write!(f, "{c},");
+            } else {
+                let _ = write!(f, "{c}({child}),");
+            }
+        }
+        Ok(())
+    }
 }
 
 fn attach(node: &mut SuffixNode, chars: Vec<char>) {
