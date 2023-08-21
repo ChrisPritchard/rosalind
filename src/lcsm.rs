@@ -15,18 +15,15 @@ const DATASET: &str = include_str!("../datasets/lcsm.txt");
 pub fn solve() {
     let fasta = util::read_fasta(DATASET);
 
-    // for a and b, representing index 0 and index len - 1 of the first fasta
-    // test the resulting substring against all remaining fasta
-    // if in all remaining, its the largest and break
-
     let (_, first) = &fasta[0];
 
     let mut result = None;
+    let mut length = first.len()/3; // just guessing it wont be longer than 33% of the length
 
-    for a in 0..first.len() {
-        let mut b = first.len() - 1;
-        while b > a {
-            let range = &first[a..=b];
+    while length > 2 {
+        for start in 0..(first.len() - length) {
+            let range = &first[start..(start + length)];
+
             let mut valid = true;
             for i in 1..fasta.len() {
                 let (_, sequence) = &fasta[i];
@@ -35,19 +32,15 @@ pub fn solve() {
                     break;
                 }
             }
-            if !valid {
-                b -= 1;
-                continue;
-            } 
-            if result.is_none() {
+            if valid {
                 result = Some(range);
-            } else if let Some(last) = result {
-                if last.len() < range.len() {
-                    result = Some(range);
-                }
-            }
+                break;
+            } 
+        }
+        if result.is_some() {
             break;
         }
+        length -= 1;
     }
 
     println!("{}", result.unwrap())
