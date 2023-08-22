@@ -1,4 +1,4 @@
-use std::{collections::{HashMap, HashSet}, fmt::Display};
+use std::collections::HashMap;
 
 
 pub fn read_fasta(source: &str) -> Vec<(String, String)> {

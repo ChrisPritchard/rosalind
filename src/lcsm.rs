@@ -16,10 +16,10 @@ pub fn solve() {
     let fasta = read_fasta(DATASET);
 
     let mut root = SuffixTree::new();
-    for (i, (_, sequence)) in fasta.iter().enumerate() {
+    for (i, (_, sequence)) in fasta.iter().enumerate().take(3) {
         general_suffix_tree(&mut root, sequence.to_string(), i);
     }
-    let result = longest_common_substring(&root, 0, fasta.len());
+    let result = longest_common_substring(&root, 0, 3);//fasta.len());
     println!("{result}");
 
     // let (_, first) = &fasta[0];
