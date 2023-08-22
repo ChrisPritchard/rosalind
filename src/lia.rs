@@ -25,5 +25,7 @@ const K: u64 = 2;
 const N: u64 = 1;
 
 pub fn solve() {
-    
+    // k is the number of generations. the amount of offspring in total is 2^K
+    // need to calculate the odds that Aa Bb is less than N/2^K, i think, then invert?
+    // can calculate odds for Aa, then square as they'll be the same for Bb
 }
