@@ -1,3 +1,5 @@
+use crate::util::{SuffixNode, longest_common_substring};
+
 mod util;
 
 mod dna;
@@ -60,6 +62,9 @@ fn main() {
     print!("\nLCSM:\n");
     lcsm::solve();
 
-    let res = util::suffix_tree("nonsense".to_string());
-    println!("{}", res);
+    // let mut root = SuffixNode::new(1);
+    // util::general_suffix_tree(&mut root, "GATTACA".to_string(), 1);
+    // util::general_suffix_tree(&mut root, "TAGACCA".to_string(), 2);
+    // util::general_suffix_tree(&mut root, "ATACA".to_string(), 3);
+    // println!("{}", longest_common_substring(&root, 3));
 }

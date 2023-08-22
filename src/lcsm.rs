@@ -8,40 +8,47 @@
 
 */
 
-use crate::util;
+use crate::util::{self, SuffixNode, longest_common_substring};
 
 const DATASET: &str = include_str!("../datasets/lcsm.txt");
 
 pub fn solve() {
     let fasta = util::read_fasta(DATASET);
 
-    let (_, first) = &fasta[0];
-
-    let mut result = None;
-    let mut length = first.len()/3; // just guessing it wont be longer than 33% of the length
-
-    while length > 2 {
-        for start in 0..(first.len() - length) {
-            let range = &first[start..(start + length)];
-
-            let mut valid = true;
-            for i in 1..fasta.len() {
-                let (_, sequence) = &fasta[i];
-                if !sequence.contains(range) {
-                    valid = false;
-                    break;
-                }
-            }
-            if valid {
-                result = Some(range);
-                break;
-            } 
-        }
-        if result.is_some() {
-            break;
-        }
-        length -= 1;
+    let mut root = SuffixNode::new(1);
+    for (i, (_, sequence)) in fasta.iter().enumerate() {
+        util::general_suffix_tree(&mut root, sequence.to_string(), i);
     }
+    let result = longest_common_substring(&root, fasta.len());
+    println!("{result}");
 
-    println!("{}", result.unwrap())
+    // let (_, first) = &fasta[0];
+
+    // let mut result = None;
+    // let mut length = first.len()/3; // just guessing it wont be longer than 33% of the length
+
+    // while length > 2 {
+    //     for start in 0..(first.len() - length) {
+    //         let range = &first[start..(start + length)];
+
+    //         let mut valid = true;
+    //         for i in 1..fasta.len() {
+    //             let (_, sequence) = &fasta[i];
+    //             if !sequence.contains(range) {
+    //                 valid = false;
+    //                 break;
+    //             }
+    //         }
+    //         if valid {
+    //             result = Some(range);
+    //             break;
+    //         } 
+    //     }
+    //     if result.is_some() {
+    //         break;
+    //     }
+    //     length -= 1;
+    // }
+
+    //println!("{}", result.unwrap())
 }

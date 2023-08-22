@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fmt::Display};
+use std::{collections::{HashMap, HashSet}, fmt::Display};
 
 
 pub fn read_fasta(source: &str) -> Vec<(String, String)> {
@@ -53,7 +53,16 @@ UGG W      CGG R      AGG R      GGG G".lines();
 }
 
 pub struct SuffixNode {
+    sources: HashSet<usize>,
     children: HashMap<char, SuffixNode>
+}
+
+impl SuffixNode {
+    pub fn new(initial_source_index: usize) -> Self {
+        let mut sources = HashSet::new();
+        sources.insert(initial_source_index);
+        Self { sources, children: HashMap::new() }
+    }
 }
 
 impl Display for SuffixNode {
@@ -73,9 +82,13 @@ impl Display for SuffixNode {
     }
 }
 
-fn attach(node: &mut SuffixNode, chars: Vec<char>) {
+fn attach(source_index: usize, node: &mut SuffixNode, chars: &[char]) {
+    if !node.sources.contains(&source_index) {
+        node.sources.insert(source_index);
+    }
+
     if chars.len() == 0 {
-        let new_child = SuffixNode { children: HashMap::new() };
+        let new_child = SuffixNode::new(source_index);
         node.children.insert('$', new_child);
         return;
     }
@@ -83,24 +96,30 @@ fn attach(node: &mut SuffixNode, chars: Vec<char>) {
     let first = chars[0].clone();
 
     if node.children.contains_key(&chars[0]) {
-        attach(&mut node.children.get_mut(&first).unwrap(), chars[1..].to_vec());
+        attach(source_index, &mut node.children.get_mut(&first).unwrap(), &chars[1..]);
     } else {
-        let mut new_child = SuffixNode { children: HashMap::new() };
-        attach(&mut new_child, chars[1..].to_vec());
+        let mut new_child = SuffixNode::new(source_index);
+        attach(source_index, &mut new_child, &chars[1..]);
         node.children.insert(first, new_child);
     }
 }
 
-pub fn suffix_tree(s: String) -> SuffixNode {
-
-    let chars: Vec<_> = s.chars().collect();
-    let mut root = SuffixNode { children: HashMap::new() };
+pub fn general_suffix_tree(existing_tree: &mut SuffixNode, source: String, source_index: usize) {
+    let chars: Vec<_> = source.chars().collect();
     let mut i = chars.len();
 
     while i > 0 {
         i -= 1;
-        attach(&mut root, chars[i..].to_vec())
+        attach(source_index, existing_tree, &chars[i..])
     }
-    
-    root
+}
+
+pub fn longest_common_substring(node: &SuffixNode, source_count: usize) -> String {
+
+    node.children.iter()
+        .filter(|(_, node)| node.sources.len() == source_count)
+        .map(|(c, node)|
+            String::from(*c) + &longest_common_substring(node, source_count)
+        ).max_by(|a, b| a.len().cmp(&b.len()))
+        .unwrap_or(String::from(""))
 }
