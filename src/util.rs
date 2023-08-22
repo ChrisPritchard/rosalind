@@ -52,74 +52,64 @@ UGG W      CGG R      AGG R      GGG G".lines();
     result
 }
 
-pub struct SuffixNode {
-    sources: HashSet<usize>,
-    children: HashMap<char, SuffixNode>
+pub struct SuffixTree {
+    nodes: Vec<char>,
+    children: Vec<Vec<usize>>,
+    sources: Vec<Vec<usize>>,
 }
 
-impl SuffixNode {
-    pub fn new(initial_source_index: usize) -> Self {
-        let mut sources = HashSet::new();
-        sources.insert(initial_source_index);
-        Self { sources, children: HashMap::new() }
+impl SuffixTree {
+    pub fn new() -> Self {
+        Self {
+            nodes: vec!['^'],
+            children: vec![vec![]],
+            sources: vec![vec![]],
+        }
+    }
+    fn add_node(&mut self, c: char, parent_index: usize) -> usize {
+        let new_index = self.nodes.len();
+        self.nodes.push(c);
+        self.children.push(Vec::new());
+        self.sources.push(Vec::new());
+        self.children[parent_index].push(new_index);
+        return new_index;
     }
 }
 
-impl Display for SuffixNode {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        if self.children.is_empty() {
-            return write!(f, "$");
-        }
-
-        for (c, child) in self.children.iter() {
-            if child.children.is_empty() {
-                let _ = write!(f, "{c},");
-            } else {
-                let _ = write!(f, "{c}({child}),");
-            }
-        }
-        Ok(())
-    }
-}
-
-fn attach(source_index: usize, node: &mut SuffixNode, chars: &[char]) {
-    if !node.sources.contains(&source_index) {
-        node.sources.insert(source_index);
+fn attach(tree: &mut SuffixTree, source_index: usize, node_index: usize, chars: &[char]) {
+    if !tree.sources[node_index].contains(&source_index) {
+        tree.sources[node_index].push(source_index);
     }
 
     if chars.len() == 0 {
-        let new_child = SuffixNode::new(source_index);
-        node.children.insert('$', new_child);
         return;
     }
 
-    let first = chars[0].clone();
-
-    if node.children.contains_key(&chars[0]) {
-        attach(source_index, &mut node.children.get_mut(&first).unwrap(), &chars[1..]);
+    let child = tree.children[node_index].iter().map(|index| (index, tree.nodes[*index])).find(|(_, c)| c == &chars[0]);
+    if let Some((index, _)) = child {
+        attach(tree, source_index, *index, &chars[1..]);
     } else {
-        let mut new_child = SuffixNode::new(source_index);
-        attach(source_index, &mut new_child, &chars[1..]);
-        node.children.insert(first, new_child);
+        let new_index = tree.add_node(chars[0], node_index);
+        attach(tree, source_index, new_index, &chars[1..]);
     }
 }
 
-pub fn general_suffix_tree(existing_tree: &mut SuffixNode, source: String, source_index: usize) {
+pub fn general_suffix_tree(existing_tree: &mut SuffixTree, source: String, source_index: usize) {
     let chars: Vec<_> = source.chars().collect();
     let mut i = chars.len();
 
     while i > 0 {
         i -= 1;
-        attach(source_index, existing_tree, &chars[i..])
+        attach(existing_tree, source_index, 0, &chars[i..])
     }
 }
 
-pub fn longest_common_substring(node: &SuffixNode, source_count: usize) -> String {
-
-    node.children.iter()
-        .filter(|(_, node)| node.sources.len() == source_count)
-        .map(|(c, node)|
-            String::from(*c) + &longest_common_substring(node, source_count)
-        ).max_by(|a, b| a.len().cmp(&b.len()))
-        .unwrap_or(String::from(""))
+pub fn longest_common_substring(tree: &SuffixTree, node_index: usize, source_count: usize) -> String {
+    tree.children[node_index].iter()
+        .filter(|child_index| tree.sources[**child_index].len() == source_count)
+        .map(|child_index| tree.nodes[node_index].to_string() + &longest_common_substring(tree, *child_index, source_count))
+        .max_by(|a, b| a.len().cmp(&b.len()))
+        .unwrap_or(tree.nodes[node_index].to_string())
+        .trim_start_matches('^')
+        .to_string()
 }

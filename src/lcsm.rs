@@ -8,18 +8,18 @@
 
 */
 
-use crate::util::{self, SuffixNode, longest_common_substring};
+use crate::util::*;
 
 const DATASET: &str = include_str!("../datasets/lcsm.txt");
 
 pub fn solve() {
-    let fasta = util::read_fasta(DATASET);
+    let fasta = read_fasta(DATASET);
 
-    let mut root = SuffixNode::new(1);
+    let mut root = SuffixTree::new();
     for (i, (_, sequence)) in fasta.iter().enumerate() {
-        util::general_suffix_tree(&mut root, sequence.to_string(), i);
+        general_suffix_tree(&mut root, sequence.to_string(), i);
     }
-    let result = longest_common_substring(&root, fasta.len());
+    let result = longest_common_substring(&root, 0, fasta.len());
     println!("{result}");
 
     // let (_, first) = &fasta[0];
