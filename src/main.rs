@@ -15,6 +15,7 @@ mod fibd;
 mod grph;
 mod iev;
 mod lcsm;
+mod lia;
 
 fn main() {
     println!("problem solutions, labelled by their problem code:");
