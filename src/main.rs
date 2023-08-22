@@ -1,3 +1,5 @@
+use std::env;
+
 
 mod util;
 
@@ -18,47 +20,22 @@ mod lcsm;
 mod lia;
 
 fn main() {
-    println!("problem solutions, labelled by their problem code:");
-
-    print!("\nDNA:\n");
-    dna::solve();
-
-    print!("\nRNA:\n");
-    rna::solve();
-
-    print!("\nREVC:\n");
-    revc::solve();
-
-    print!("\nFIB:\n");
-    fib::solve();
-
-    print!("\nGC:\n");
-    gc::solve();
-
-    print!("\nHAMM:\n");
-    hamm::solve();
-
-    print!("\nIPRB:\n");
-    iprb::solve();
-
-    print!("\nPROT:\n");
-    prot::solve();
-
-    print!("\nSUBS:\n");
-    subs::solve();
-
-    print!("\nCONS:\n");
-    cons::solve();
-
-    print!("\nFIBD:\n");
-    fibd::solve();
-
-    print!("\nGRPH:\n");
-    grph::solve();
-
-    print!("\nIEV:\n");
-    iev::solve();
-
-    print!("\nLCSM:\n");
-    lcsm::solve();
+    let token = env::args().nth(1).unwrap_or(String::from("")).to_lowercase();
+    match token.as_str() {
+        "dna"   => dna::solve(),
+        "rna"   => rna::solve(),
+        "revc"  => revc::solve(),
+        "fib"   => fib::solve(),
+        "gc"    => gc::solve(),
+        "hamm"  => hamm::solve(),
+        "iprb"  => iprb::solve(),
+        "prot"  => prot::solve(),
+        "subs"  => subs::solve(),
+        "cons"  => cons::solve(),
+        "fibd"  => fibd::solve(),
+        "grph"  => grph::solve(),
+        "iev"   => iev::solve(),
+        "lcsm"  => lcsm::solve(),
+        _       => lia::solve(),
+    }
 }
