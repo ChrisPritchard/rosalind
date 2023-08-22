@@ -15,12 +15,16 @@ const DATASET: &str = include_str!("../datasets/lcsm.txt");
 pub fn solve() {
     let fasta = read_fasta(DATASET);
 
+    let num_to_check = 3; // this could check all, fasta.len(), but 3 is usually enough
+
     let mut root = SuffixTree::new();
-    for (i, (_, sequence)) in fasta.iter().enumerate().take(3) {
+    for (i, (_, sequence)) in fasta.iter().enumerate().take(num_to_check) {
         general_suffix_tree(&mut root, sequence.to_string(), i);
     }
-    let result = longest_common_substring(&root, 0, 3);//fasta.len());
+    let result = longest_common_substring(&root, 0, num_to_check);//fasta.len());
     println!("{result}");
+
+    // slightly faster, brute force appoach:
 
     // let (_, first) = &fasta[0];
 
@@ -50,5 +54,5 @@ pub fn solve() {
     //     length -= 1;
     // }
 
-    //println!("{}", result.unwrap())
+    // println!("{}", result.unwrap())
 }
