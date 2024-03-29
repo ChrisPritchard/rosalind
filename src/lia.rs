@@ -21,33 +21,52 @@ organism, i.e., 1/16.
 Because of independence, we can also extend the idea of Punnett squares to multiple factors, as shown in Figure 1. We now wish to quantify Mendel's notion of independence using probability.
 */
 
-const K: u32 = 2;
-const N: u32 = 1;
+use std::collections::HashMap;
 
-fn binomial_coefficient(n: u32, r: u32) -> u32 {
-    let mut top = (n-r)+1;
-    for n in (n-r)+2..=n {
-        top *= n;
+use num_bigint::{BigUint, ToBigUint};
+
+const K: u32 = 6;
+const N: u32 = 17;
+
+fn fact(n: u32, mem: &mut HashMap<u32, BigUint>) -> BigUint {
+    if n == 1 || n == 0 {
+        1.to_biguint().unwrap()
+    } else if mem.contains_key(&n) {
+        mem[&n].clone()
+    } else {
+        let res = n * fact(n-1, mem);
+        mem.insert(n, res.clone());
+        res
     }
-    let mut bottom = 2;
-    for r in 3..=r {
-        bottom *= r;
-    }
-    top / bottom
+}
+
+
+fn binomial_coefficient(n: u32, r: u32, mem: &mut HashMap<u32, BigUint>) -> u {
+    fact(n, mem) / (fact(r, mem) * fact(n - r, mem))
 }
 
 pub fn solve() {
+    let mut mem = HashMap::new();
+
     // probability a child is Aa Bb
     let target_prob: f64 = 0.25; // 0.5 * 0.5
     // find the total possible offspring at gen K
     let children: u32 = 2;
     let total_offspring = children.pow(K);
+
     // calculate probability of at least N children
     // by summing probability for each count of AaBb in the final set (that has at least N)
     let mut total_prob: f64 = 0.0;
+    
     for r in N..=total_offspring {
-        // count prob that r will be AaBb in final set, which is prob of n + prob of not n
-        total_prob = total_prob + (binomial_coefficient(total_offspring, r) as f64) * target_prob.powi(r.try_into().unwrap()) * (1.0-target_prob).powi((total_offspring-r).try_into().unwrap());
+        let possible_ways_to_get_r = binomial_coefficient(total_offspring, r, &mut mem);
+        let prob_of_r_target = target_prob.powi(r as i32);
+        let prob_of_n_minus_r_not_target = (1. - target_prob).powi((total_offspring-r) as i32);
+
+        println!("{}", possible_ways_to_get_r);
+        
+        total_prob += prob_of_r_target * prob_of_n_minus_r_not_target;
     }
-    println!("{}", total_prob);
+
+    println!("{:.3}", total_prob);
 }
