@@ -21,11 +21,33 @@ organism, i.e., 1/16.
 Because of independence, we can also extend the idea of Punnett squares to multiple factors, as shown in Figure 1. We now wish to quantify Mendel's notion of independence using probability.
 */
 
-const K: u64 = 2;
-const N: u64 = 1;
+const K: u32 = 2;
+const N: u32 = 1;
+
+fn binomial_coefficient(n: u32, r: u32) -> u32 {
+    let mut top = (n-r)+1;
+    for n in (n-r)+2..=n {
+        top *= n;
+    }
+    let mut bottom = 2;
+    for r in 3..=r {
+        bottom *= r;
+    }
+    top / bottom
+}
 
 pub fn solve() {
-    // k is the number of generations. the amount of offspring in total is 2^K
-    // need to calculate the odds that Aa Bb is less than N/2^K, i think, then invert?
-    // can calculate odds for Aa, then square as they'll be the same for Bb
+    // probability a child is Aa Bb
+    let target_prob: f64 = 0.25; // 0.5 * 0.5
+    // find the total possible offspring at gen K
+    let children: u32 = 2;
+    let total_offspring = children.pow(K);
+    // calculate probability of at least N children
+    // by summing probability for each count of AaBb in the final set (that has at least N)
+    let mut total_prob: f64 = 0.0;
+    for r in N..=total_offspring {
+        // count prob that r will be AaBb in final set, which is prob of n + prob of not n
+        total_prob = total_prob + (binomial_coefficient(total_offspring, r) as f64) * target_prob.powi(r.try_into().unwrap()) * (1.0-target_prob).powi((total_offspring-r).try_into().unwrap());
+    }
+    println!("{}", total_prob);
 }
