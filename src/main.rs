@@ -18,6 +18,7 @@ mod grph;
 mod iev;
 mod lcsm;
 mod lia;
+mod mprt;
 
 fn main() {
     let token = env::args().nth(1).unwrap_or(String::from("")).to_lowercase();
@@ -36,6 +37,7 @@ fn main() {
         "grph"  => grph::solve(),
         "iev"   => iev::solve(),
         "lcsm"  => lcsm::solve(),
-        _       => lia::solve(),
+        "lia"   => lia::solve(),
+        "mprt" | _ => mprt::solve(),
     }
 }
