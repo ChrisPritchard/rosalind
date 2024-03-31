@@ -23,25 +23,23 @@ Because of independence, we can also extend the idea of Punnett squares to multi
 
 use std::collections::HashMap;
 
-use num_bigint::{BigUint, ToBigUint};
-
 const K: u32 = 6;
-const N: u32 = 17;
+const N: u32 = 16;
 
-fn fact(n: u32, mem: &mut HashMap<u32, BigUint>) -> BigUint {
+fn fact(n: u32, mem: &mut HashMap<u32, f64>) -> f64 {
     if n == 1 || n == 0 {
-        1.to_biguint().unwrap()
+        1.
     } else if mem.contains_key(&n) {
         mem[&n].clone()
     } else {
-        let res = n * fact(n-1, mem);
+        let res = n as f64 * fact(n-1, mem);
         mem.insert(n, res.clone());
         res
     }
 }
 
 
-fn binomial_coefficient(n: u32, r: u32, mem: &mut HashMap<u32, BigUint>) -> u {
+fn binomial_coefficient(n: u32, r: u32, mem: &mut HashMap<u32, f64>) -> f64 {
     fact(n, mem) / (fact(r, mem) * fact(n - r, mem))
 }
 
@@ -63,9 +61,9 @@ pub fn solve() {
         let prob_of_r_target = target_prob.powi(r as i32);
         let prob_of_n_minus_r_not_target = (1. - target_prob).powi((total_offspring-r) as i32);
 
-        println!("{}", possible_ways_to_get_r);
-        
-        total_prob += prob_of_r_target * prob_of_n_minus_r_not_target;
+        let chance = possible_ways_to_get_r * prob_of_r_target * prob_of_n_minus_r_not_target;
+
+        total_prob += chance;
     }
 
     println!("{:.3}", total_prob);
