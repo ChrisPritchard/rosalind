@@ -11,6 +11,7 @@ fn download_content(host: &str, path: &str) -> Result<String, Box<dyn Error>> {
     stream.read_to_end(&mut buffer)?;
 
     let result = std::str::from_utf8(&buffer)?;
+    let result = result.split("\r\n\r\n").last().unwrap();
     Ok(result.to_string())
 }
 
