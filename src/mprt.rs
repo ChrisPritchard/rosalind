@@ -1,5 +1,7 @@
 use std::{error::Error, io::{Read, Write}, net::TcpStream};
 
+const DATASET: &str = include_str!("../datasets/mprt.txt");
+
 fn get_key(name: &str) -> &str {
     name.split("_").nth(0).unwrap()
 }
