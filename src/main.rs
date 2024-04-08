@@ -19,6 +19,7 @@ mod iev;
 mod lcsm;
 mod lia;
 mod mprt;
+mod mrna;
 
 fn main() {
     let token = env::args().nth(1).unwrap_or(String::from("")).to_lowercase();
@@ -38,6 +39,7 @@ fn main() {
         "iev"   => iev::solve(),
         "lcsm"  => lcsm::solve(),
         "lia"   => lia::solve(),
-        "mprt" | _ => mprt::solve(),
+        "mprt"  => mprt::solve(),
+        "mrna" | _ => mrna::solve(),
     }
 }
