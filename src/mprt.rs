@@ -46,7 +46,7 @@ fn parse_pattern(pattern: &str) -> Vec<PatternRules> {
     result
 }
 
-fn find_pattern(source: &str, pattern: Vec<PatternRules>) -> Vec<usize> {
+fn find_pattern(source: &str, pattern: &Vec<PatternRules>) -> Vec<usize> {
     let mut result = Vec::new();
     let source_chars: Vec<char> = source.chars().collect();
 
@@ -69,7 +69,20 @@ fn find_pattern(source: &str, pattern: Vec<PatternRules>) -> Vec<usize> {
 }
 
 pub fn solve() {
-    let source = "MLGVLVLGALALAGLGFPAPAEPQPGGSQCVEHDCFALYPGPATFLNASQICDGLRGHLMTVRSSVAADVISLLLNGDGGVGRRRLWIGLQLPPGCGDPKRLGPLRGFQWVTGDNNTSYSRWARLDLNGAPLCGPLCVAVSAAEATVPSEPIWEEQQCEVKADGFLCEFHFPATCRPLAVEPGAAAAAVSITYGTPFAARGADFQALPVGSSAAVAPLGLQLMCTAPPGAVQGHWAREAPGAWDCSVENGGCEHACNAIPGAPRCQCPAGAALQADGRSCTASATQSCNDLCEHFCVPNPDQPGSYSCMCETGYRLAADQHRCEDVDDCILEPSPCPQRCVNTQGGFECHCYPNYDLVDGECVEPVDPCFRANCEYQCQPLNQTSYLCVCAEGFAPIPHEPHRCQMFCNQTACPADCDPNTQASCECPEGYILDDGFICTDIDECENGGFCSGVCHNLPGTFECICGPDSALARHIGTDCDSGKVDGGDSGSGEPPPSPTPGSTLTPPAVGLVHSGLLIGISIASLCLVVALLALLCHLRKKQGAARAKMEYKCAAPSKEVVLQHVRTERTPQRL";
     let pattern = parse_pattern("N{P}[ST]{P}");
-    println!("{:?}", find_pattern(source, pattern));
+
+    for entry in DATASET.split("\n") {
+        let key = get_key(entry).trim();
+        let data = download_content("rest.uniprot.org:80", &format!("/uniprotkb/{key}.fasta"));
+        if let Ok(data) = data {
+            let lines = data.split("\n");
+            let source = lines.skip(1).collect::<String>();
+            let positions = find_pattern(&source, &pattern);
+            if positions.len() > 0 {
+                println!("{entry}");
+                let positions = positions.iter().map(|p| p.to_string() + " ").collect::<String>();
+                println!("{positions}");
+            }
+        }
+    } 
 }
