@@ -20,6 +20,7 @@ mod lcsm;
 mod lia;
 mod mprt;
 mod mrna;
+mod orf;
 
 fn main() {
     let token = env::args().nth(1).unwrap_or(String::from("")).to_lowercase();
@@ -40,6 +41,7 @@ fn main() {
         "lcsm"  => lcsm::solve(),
         "lia"   => lia::solve(),
         "mprt"  => mprt::solve(),
-        "mrna" | _ => mrna::solve(),
+        "mrna"  => mrna::solve(),
+        "orf" | _ => orf::solve(),
     }
 }
