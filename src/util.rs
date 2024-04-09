@@ -52,6 +52,18 @@ UGG W      CGG R      AGG R      GGG G".lines();
     result
 }
 
+pub fn rev_complement(dna_strand: &str) -> String {
+    dna_strand.chars().rev().map(|nucleobase| {
+        match nucleobase {
+            'A' => 'T',
+            'T' => 'A',
+            'G' => 'C',
+            'C' => 'G',
+            _ => panic!("invalid character in dna string: {}", nucleobase)
+        }
+    }).collect::<String>()
+}
+
 pub struct SuffixTree {
     nodes: Vec<char>,
     children: Vec<Vec<usize>>,

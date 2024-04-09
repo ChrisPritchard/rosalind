@@ -1,21 +1,11 @@
+use crate::util;
+
 
 const DATASET: &str = include_str!("../datasets/orf.txt");
 
-fn rev_complement(dna_strand: &str) -> String {
-    dna_strand.chars().rev().map(|nucleobase| {
-        match nucleobase {
-            'A' => 'T',
-            'T' => 'A',
-            'G' => 'C',
-            'C' => 'G',
-            _ => panic!("invalid character in dna string: {}", nucleobase)
-        }
-    }).collect::<String>()
-}
-
 pub fn solve() {
-    let dna_strand1 = DATASET.split("\n").nth(1).unwrap();
-    let dna_strand2: &str = &rev_complement(dna_strand1);
+    let dna_strand1 = &util::read_fasta(DATASET)[0].1;
+    let dna_strand2 = &util::rev_complement(dna_strand1);
 
     let reading_frame_rna_codons = |dna_strand: &str, offset: usize| 
         dna_strand.chars()
@@ -24,29 +14,32 @@ pub fn solve() {
             .collect::<Vec<_>>();
 
     let start_codon = "AUG";
-    let codon_map = crate::util::codon_map();
-
-    let mut reading = false;
-    let mut current_protein = String::new();
+    let codon_map = util::codon_map();
+    let mut found_proteins = Vec::new();
 
     for strand in [&dna_strand1, &dna_strand2] {
         for frame in 0..=2 {
-            for codon in reading_frame_rna_codons(strand, frame) {
-                if codon == start_codon {
-                    reading = true;
-                }
-                if reading {
-                    let amino_acid = codon_map.get(&codon).unwrap();
-                    if amino_acid == "Stop" {
-                        reading = false;
-                        println!("{current_protein}");
-                        current_protein.clear();
-                    } else {
-                        current_protein.push_str(&amino_acid);
+            let codons = reading_frame_rna_codons(strand, frame);
+            for i in 0..codons.len() {
+                if codons[i] == start_codon {
+                    let mut protein = String::new();
+                    for j in i..codons.len() {
+                        let amino_acid = codon_map.get(&codons[j]).unwrap();
+                        if amino_acid == "Stop" {
+                            found_proteins.push(protein);
+                            break;
+                        } else {
+                            protein.push_str(&amino_acid);
+                        }
                     }
                 }
             }
         }
     }
-    
+
+    found_proteins.sort();
+    found_proteins.dedup();
+    for protein in found_proteins {
+        println!("{protein}");
+    }
 }
