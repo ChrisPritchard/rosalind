@@ -6,12 +6,7 @@ const N: usize = 6;
 // the incorrect formats for me came from running via powershell on windows, which defaults to the windows format
 
 pub fn solve() {
-    let mut fact = N;
-    for i in 2..fact {
-        fact *= i;
-    }
-    println!("{fact}");
-
+    println!("{}", (2..=N).product::<usize>());
     iterate(N, &mut Vec::new())
 }
 
