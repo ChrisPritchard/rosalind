@@ -6,7 +6,19 @@ pub fn solve() {
     for i in 2..fact {
         fact *= i;
     }
-    println!("{fact}")
+    println!("{fact}");
 
+    iterate(N, 1)
+}
 
+fn iterate(max: usize, index: usize) {
+    for i in 1..=max {
+        print!("{i} ");
+        if index == max {
+            println!();
+        }
+        else {
+            iterate(max, index + 1);
+        }
+    }
 }
