@@ -24,8 +24,6 @@ pub fn read_fasta(source: &str) -> Vec<(String, String)> {
 }
 
 pub fn codon_map() -> HashMap<String, String> {
-    let mut result = HashMap::new();
-
     let lines = 
 "UUU F      CUU L      AUU I      GUU V
 UUC F      CUC L      AUC I      GUC V
@@ -43,11 +41,44 @@ UGU C      CGU R      AGU S      GGU G
 UGC C      CGC R      AGC S      GGC G
 UGA Stop   CGA R      AGA R      GGA G
 UGG W      CGG R      AGG R      GGG G".lines();
+
+    let mut result = HashMap::new();
     for line in lines {
         let parts: Vec<_> = line.split_whitespace().collect();
         for i in (0..=6).step_by(2) {
             result.insert(parts[i].to_string(), parts[i + 1].to_string());
         }
+    }
+    result
+}
+
+pub fn monoisotopic_mass_table() -> HashMap<char, f64> {
+    let lines = 
+"A   71.03711
+C   103.00919
+D   115.02694
+E   129.04259
+F   147.06841
+G   57.02146
+H   137.05891
+I   113.08406
+K   128.09496
+L   113.08406
+M   131.04049
+N   114.04293
+P   97.05276
+Q   128.05858
+R   156.10111
+S   87.03203
+T   101.04768
+V   99.06841
+W   186.07931
+Y   163.06333".lines();
+
+    let mut result = HashMap::new();
+    for line in lines {
+        let parts: Vec<_> = line.split_whitespace().collect();
+        result.insert(parts[0].chars().nth(0).unwrap(), parts[1].parse::<f64>().unwrap());
     }
     result
 }
