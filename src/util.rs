@@ -52,15 +52,40 @@ UGG W      CGG R      AGG R      GGG G".lines();
     result
 }
 
-pub fn mrna(dna: &str) -> String {
-    let step1 = rev_complement(dna);
-    step1.chars().map(|c| if c == 'T' { 'U' } else { c }).collect()
-}
+pub fn translate_rna(rna: &str) -> String {
+    let codon_map = codon_map();
+    let chars: Vec<_> = rna.chars().collect();
+    
+    let mut i = 0;
+    let mut result = String::new();
+    let mut translating = false;
 
-// pub fn translate_codons(rna: &str) -> String {
-//     let codon_map = codon_map();
-//     rna.chars().
-// }
+    loop {
+        if i > chars.len() - 3 {
+            break;
+        }
+        let codon: String = chars[i..=i+2].iter().collect();
+        if !translating {
+            if codon != "AUG" {
+                i += 1;
+                continue;
+            } else {
+                result.push('M');
+                translating = true;
+                i += 3;
+                continue;
+            }
+        }
+        let protein = &codon_map[&codon];
+        if protein == "Stop" {
+            break;
+        }
+        result.push_str(&protein);
+        i += 3;
+    }
+
+    result
+}
 
 pub fn monoisotopic_mass_table() -> HashMap<char, f64> {
     let lines = 

@@ -9,6 +9,7 @@ pub fn solve() {
     for i in 1..fasta.len() {
         dna = dna.replace(&fasta[i].1, "")
     }
-    let protein = util::mrna(&dna);
+    let rna = dna.replace("T", "U");
+    let protein = util::translate_rna(&rna);
     println!("{protein}")
 }
