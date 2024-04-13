@@ -661,7 +661,6 @@ mod revp {
 mod splc {
     use crate::util;
 
-
     const DATASET: &str = include_str!("../datasets/splc.txt");
     
     pub fn solve() {
@@ -677,7 +676,25 @@ mod splc {
 }
 
 mod lexf {
+    const DATASET: &str = 
+"A B C D E
+4";
+
     pub fn solve() {
-        println!("test")
+        let chars: Vec<_> = DATASET.lines().nth(0).unwrap().split_whitespace().collect();
+        let word_len: usize = DATASET.lines().nth(1).unwrap().parse().unwrap();
+        iterator(String::new(), &chars, word_len);
+    }
+
+    fn iterator(acc: String, chars: &Vec<&str>, word_len: usize) {
+        for i in 0..chars.len() {
+            let mut next = acc.clone();
+            next.push_str(chars[i]);
+            if next.len() == word_len {
+                println!("{next}");
+            } else {
+                iterator(next, chars, word_len);
+            }
+        }
     }
 }
