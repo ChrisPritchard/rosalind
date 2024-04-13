@@ -28,7 +28,8 @@ fn main() {
         "prtm"  => prtm::solve(),
         "revp"  => revp::solve(),
         "splc"  => splc::solve(),
-        "lexf" | _ => lexf::solve(),
+        "lexf"  => lexf::solve(),
+        "lgis" | _ => lgis::solve(),
     }
 }
 
@@ -696,5 +697,50 @@ mod lexf {
                 iterator(next, chars, word_len);
             }
         }
+    }
+}
+
+mod lgis {
+
+    // https://www.geeksforgeeks.org/construction-of-longest-increasing-subsequence-using-dynamic-programming/
+
+    const DATASET: &str = include_str!("../datasets/lgis.txt");
+    
+    pub fn solve() {
+        let permutation: Vec<_> = DATASET.lines().nth(1).unwrap().split_whitespace().map(|s| s.parse::<usize>().unwrap()).collect();
+        
+        let mut increasing = Vec::new();
+        increasing.push(vec![permutation[0]]);
+
+        for i in 1..permutation.len() {
+            let max_j = increasing.iter().filter(|v| v.last().unwrap() < &permutation[i]).max_by_key(|v| v.len());
+            if let Some(v) = max_j {
+                let mut new_v = v.clone();
+                new_v.push(permutation[i]);
+                increasing.push(new_v);
+            } else {
+                increasing.push(vec![permutation[i]]);
+            }
+        }
+
+        let longest_increasing: String = increasing.iter().max_by_key(|v| v.len()).unwrap().iter().map(|u| u.to_string() + " ").collect();
+
+        let mut decreasing = Vec::new();
+        decreasing.push(vec![permutation[0]]);
+
+        for i in 1..permutation.len() {
+            let max_j = decreasing.iter().filter(|v| v.last().unwrap() > &permutation[i]).max_by_key(|v| v.len());
+            if let Some(v) = max_j {
+                let mut new_v = v.clone();
+                new_v.push(permutation[i]);
+                decreasing.push(new_v);
+            } else {
+                decreasing.push(vec![permutation[i]]);
+            }
+        }
+
+        let longest_decreasing: String = decreasing.iter().max_by_key(|v| v.len()).unwrap().iter().map(|u| u.to_string() + " ").collect();
+
+        println!("{longest_increasing}\n{longest_decreasing}");
     }
 }
