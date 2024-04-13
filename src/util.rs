@@ -52,6 +52,16 @@ UGG W      CGG R      AGG R      GGG G".lines();
     result
 }
 
+pub fn mrna(dna: &str) -> String {
+    let step1 = rev_complement(dna);
+    step1.chars().map(|c| if c == 'T' { 'U' } else { c }).collect()
+}
+
+// pub fn translate_codons(rna: &str) -> String {
+//     let codon_map = codon_map();
+//     rna.chars().
+// }
+
 pub fn monoisotopic_mass_table() -> HashMap<char, f64> {
     let lines = 
 "A   71.03711

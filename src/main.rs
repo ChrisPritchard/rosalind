@@ -24,6 +24,7 @@ mod orf;
 mod perm;
 mod prtm;
 mod revp;
+mod splc;
 
 fn main() {
     let token = env::args().nth(1).unwrap_or(String::from("")).to_lowercase();
@@ -48,6 +49,7 @@ fn main() {
         "orf"   => orf::solve(),
         "perm"  => perm::solve(),
         "prtm"  => prtm::solve(),
-        "revp" | _ => revp::solve(),
+        "revp"  => revp::solve(),
+        "splc" | _ => splc::solve(),
     }
 }
