@@ -709,38 +709,30 @@ mod lgis {
     pub fn solve() {
         let permutation: Vec<_> = DATASET.lines().nth(1).unwrap().split_whitespace().map(|s| s.parse::<usize>().unwrap()).collect();
         
-        let mut increasing = Vec::new();
-        increasing.push(vec![permutation[0]]);
+        let find_longest = |comparer: fn(&usize, &usize) -> bool| -> Vec<_> {
+            let mut calculated = Vec::new();
+            calculated.push(vec![permutation[0]]);
 
-        for i in 1..permutation.len() {
-            let max_j = increasing.iter().filter(|v| v.last().unwrap() < &permutation[i]).max_by_key(|v| v.len());
-            if let Some(v) = max_j {
-                let mut new_v = v.clone();
-                new_v.push(permutation[i]);
-                increasing.push(new_v);
-            } else {
-                increasing.push(vec![permutation[i]]);
+            for i in 1..permutation.len() {
+                let max_j = calculated.iter().filter(|v| comparer(v.last().unwrap(), &permutation[i])).max_by_key(|v| v.len());
+                if let Some(v) = max_j {
+                    let mut new_v = v.clone();
+                    new_v.push(permutation[i]);
+                    calculated.push(new_v);
+                } else {
+                    calculated.push(vec![permutation[i]]);
+                }
             }
-        }
 
-        let longest_increasing: String = increasing.iter().max_by_key(|v| v.len()).unwrap().iter().map(|u| u.to_string() + " ").collect();
+            calculated.iter().max_by_key(|v| v.len()).unwrap().clone()
+        };
 
-        let mut decreasing = Vec::new();
-        decreasing.push(vec![permutation[0]]);
+        let increasing = find_longest(|a, b| a < b);
+        let increasing: String = increasing.iter().map(|u| u.to_string() + " ").collect();
 
-        for i in 1..permutation.len() {
-            let max_j = decreasing.iter().filter(|v| v.last().unwrap() > &permutation[i]).max_by_key(|v| v.len());
-            if let Some(v) = max_j {
-                let mut new_v = v.clone();
-                new_v.push(permutation[i]);
-                decreasing.push(new_v);
-            } else {
-                decreasing.push(vec![permutation[i]]);
-            }
-        }
+        let decreasing = find_longest(|a, b| a > b);
+        let decreasing: String = decreasing.iter().map(|u| u.to_string() + " ").collect();
 
-        let longest_decreasing: String = decreasing.iter().max_by_key(|v| v.len()).unwrap().iter().map(|u| u.to_string() + " ").collect();
-
-        println!("{longest_increasing}\n{longest_decreasing}");
+        println!("{increasing}\n{decreasing}");
     }
 }
